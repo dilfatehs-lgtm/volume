@@ -59,12 +59,12 @@ xcodebuild test -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 
 
 ### 1. Your identity (2 minutes)
 
-Find and replace `com.volume.app` if you want a different bundle id. It appears in:
+Find and replace `com.hibeamgroup.volume` if you want a different bundle id. It appears in:
 
 | File | What |
 |---|---|
 | `Volume.xcodeproj/project.pbxproj` | `PRODUCT_BUNDLE_IDENTIFIER` (Debug + Release) |
-| `Volume/Volume.entitlements` | `iCloud.com.volume.app` container id |
+| `Volume/Volume.entitlements` | `iCloud.com.hibeamgroup.volume` container id |
 | `Volume/Model/VolumeStore.swift` | `cloudKitContainerID` |
 
 Then set your team: select the **Volume** target ▸ *Signing & Capabilities* ▸ Team.
@@ -74,7 +74,7 @@ Then set your team: select the **Volume** target ▸ *Signing & Capabilities* �
 The entitlements file is complete and ready. On your end:
 
 1. **Apple Developer portal** ▸ Identifiers ▸ your App ID ▸ enable **iCloud**, and create
-   the container `iCloud.com.volume.app`.
+   the container `iCloud.com.hibeamgroup.volume`.
 2. In Xcode, *Signing & Capabilities* should now show **iCloud ▸ CloudKit** with that
    container ticked, plus **Background Modes ▸ Remote notifications** (already in
    `Info.plist`).

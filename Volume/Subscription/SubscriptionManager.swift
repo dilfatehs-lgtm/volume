@@ -22,7 +22,7 @@ final class SubscriptionManager {
     static let annualID = "com.volume.pro.annual"
     static let productIDs: Set<String> = [monthlyID, annualID]
 
-    private static let log = Logger(subsystem: "com.volume.app", category: "storekit")
+    private static let log = Logger(subsystem: "com.hibeamgroup.volume", category: "storekit")
 
     private(set) var products: [Product] = []
     private(set) var status: Status = .loading

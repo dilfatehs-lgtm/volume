@@ -14,9 +14,9 @@ import SwiftData
 /// without a signing team, which is exactly how this project ships until a team is set.
 enum VolumeStore {
 
-    static let cloudKitContainerID = "iCloud.com.volume.app"
+    static let cloudKitContainerID = "iCloud.com.hibeamgroup.volume"
 
-    private static let log = Logger(subsystem: "com.volume.app", category: "store")
+    private static let log = Logger(subsystem: "com.hibeamgroup.volume", category: "store")
 
     /// Whether this build can safely use CloudKit.
     ///

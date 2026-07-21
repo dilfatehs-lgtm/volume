@@ -24,7 +24,7 @@ xcodebuild -project Volume.xcodeproj -scheme Volume \
 
 # Run in the simulator (see DEBUG launch arguments below)
 xcrun simctl install "iPhone 16" <DerivedData>/Build/Products/Debug-iphonesimulator/Volume.app
-xcrun simctl launch "iPhone 16" com.volume.app -VolumeResetData -VolumeSampleData -VolumeSkipOnboarding -VolumeUnlock
+xcrun simctl launch "iPhone 16" com.hibeamgroup.volume -VolumeResetData -VolumeSampleData -VolumeSkipOnboarding -VolumeUnlock
 ```
 
 UI-test screenshots are `XCTAttachment`s; extract with
