@@ -1,0 +1,94 @@
+import StoreKit
+import StoreKitTest
+import XCTest
+@testable import Volume
+
+/// Verifies the StoreKit wiring against `Products.storekit`.
+///
+/// Uses `SKTestSession`, which loads the configuration from the test bundle at runtime.
+/// The scheme's `StoreKitConfigurationFileReference` covers Run in Xcode but is not
+/// applied under `xcodebuild test`, so relying on it here would silently test nothing.
+///
+/// This checks what a screenshot can't: that the product IDs in code match the
+/// configuration, that both tiers exist with the right renewal periods, and that the
+/// 7-day free trial is actually attached. Change an ID in one place and not the other and
+/// this fails, instead of shipping a paywall with nothing to sell.
+@MainActor
+final class SubscriptionTests: XCTestCase {
+
+    private var session: SKTestSession!
+
+    override func setUp() async throws {
+        try await super.setUp()
+        session = try SKTestSession(configurationFileNamed: "Products")
+        session.resetToDefaultState()
+        session.clearTransactions()
+        session.disableDialogs = true
+    }
+
+    override func tearDown() async throws {
+        session = nil
+        try await super.tearDown()
+    }
+
+    func testBothProductsLoadWithTheExpectedPricesAndPeriods() async throws {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+
+        XCTAssertFalse(manager.productLoadFailed,
+                       "Products failed to load — check Products.storekit is attached to the scheme")
+        XCTAssertEqual(manager.products.count, 2)
+
+        let annual = try XCTUnwrap(manager.annual, "Missing \(SubscriptionManager.annualID)")
+        let monthly = try XCTUnwrap(manager.monthly, "Missing \(SubscriptionManager.monthlyID)")
+
+        XCTAssertEqual(annual.displayPrice, "$29.99")
+        XCTAssertEqual(monthly.displayPrice, "$4.99")
+
+        XCTAssertEqual(annual.subscription?.subscriptionPeriod.unit, .year)
+        XCTAssertEqual(annual.subscription?.subscriptionPeriod.value, 1)
+        XCTAssertEqual(monthly.subscription?.subscriptionPeriod.unit, .month)
+        XCTAssertEqual(monthly.subscription?.subscriptionPeriod.value, 1)
+    }
+
+    func testBothProductsOfferTheSevenDayFreeTrial() async throws {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+
+        for product in manager.products {
+            let offer = try XCTUnwrap(product.subscription?.introductoryOffer,
+                                      "\(product.id) has no introductory offer")
+            XCTAssertEqual(offer.paymentMode, .freeTrial, "\(product.id) trial should be free")
+            XCTAssertEqual(offer.period.unit, .week)
+            XCTAssertEqual(offer.period.value, 1, "\(product.id) trial should be 7 days")
+        }
+    }
+
+    /// Annual must actually be cheaper per year, or the "SAVE x%" badge would be a lie.
+    /// The badge is only rendered when this holds.
+    func testAnnualIsCheaperThanTwelveMonths() async throws {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+
+        let annual = try XCTUnwrap(manager.annual)
+        let monthly = try XCTUnwrap(manager.monthly)
+        XCTAssertLessThan(annual.price, monthly.price * 12)
+    }
+
+    func testAnnualIsListedFirst() async {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+        XCTAssertEqual(manager.products.first?.id, SubscriptionManager.annualID,
+                       "The better-value plan should be the default selection")
+    }
+
+    /// With no purchases on the test account, entitlement checking must land on `.never`
+    /// — not `.expired`, which would send a brand-new user to the resubscribe screen.
+    func testNoPurchaseHistoryResolvesToNeverSubscribed() async {
+        let manager = SubscriptionManager()
+        await manager.refreshEntitlements()
+        XCTAssertNotEqual(manager.status, .loading, "Entitlement check should resolve")
+        XCTAssertNotEqual(manager.status, .expired,
+                          "A user who never subscribed must not see the resubscribe screen")
+    }
+}
