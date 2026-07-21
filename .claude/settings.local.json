@@ -4,7 +4,10 @@
       "Bash(xcodebuild -version)",
       "Bash(xcodebuild -showsdks)",
       "Bash(swift --version)",
-      "Bash(xcrun simctl *)"
+      "Bash(xcrun simctl *)",
+      "Bash(sw_vers -productVersion)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 16' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 build)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -showdestinations)"
     ]
   }
 }
