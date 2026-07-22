@@ -102,6 +102,23 @@ which is their storage, not data collected by you. This matches `Volume/PrivacyI
 
 All questionnaire answers are **None** / **No**. Expected result: **4+**.
 
+## EU Digital Services Act — trader status
+
+**Declare as a trader.** Selling a subscription is commercial activity, so the DSA
+definition applies (acting "for purposes relating to his or her trade, business, craft or
+profession") even as a sole individual.
+
+Entered under App Store Connect ▸ **Business** ▸ Trader Status: legal name, **street
+address**, phone and email.
+
+> **Apple publishes all of it on your EU App Store listing**, visible to anyone, and
+> verifies it — so it can't be fabricated. The decision here was to use the home address.
+> If that becomes uncomfortable once the app is public, the fix is a virtual office or
+> registered-agent address (~$10–30/month), updated in the same place. Declining to declare
+> removes the app from all EU storefronts.
+
+Not legal advice — worth a word with an accountant if your circumstances change.
+
 ---
 
 ## Subscriptions
