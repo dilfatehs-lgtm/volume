@@ -1,4 +1,3 @@
-import Charts
 import SwiftData
 import SwiftUI
 
@@ -87,42 +86,45 @@ struct OnboardingView: View {
 
     private var welcome: some View {
         OnboardingStep(title: "Welcome to Volume",
-                       message: "One number for how much work you did. Beat it next time. That's the whole app.") {
-            CountingScoreDemo(target: 12480, isActive: page == 0, reduceMotion: reduceMotion)
+                       message: "Every workout gets one number: the total volume you lifted. Beat that number next time and you're progressively overloading. Simple.") {
+            VStack(spacing: 22) {
+                VolumeLogo(height: 58)
+                CountingScoreDemo(target: 12480, isActive: page == 0, reduceMotion: reduceMotion)
+            }
         }
     }
 
     private var logging: some View {
-        OnboardingStep(title: "Log your sets and reps",
-                       message: "Reps always. Weight when there is one. Nothing else to fill in.") {
+        OnboardingStep(title: "Log your sets",
+                       message: "Punch in your reps and the weight, if there is one. That's it — we do the rest.") {
             SetRowsDemo(isActive: page == 1, reduceMotion: reduceMotion)
         }
     }
 
     private var scoring: some View {
-        OnboardingStep(title: "Every rep becomes a score",
-                       message: "Reps × weight, added up across every set. Bodyweight sets count their reps.") {
+        OnboardingStep(title: "Every rep adds up",
+                       message: "We multiply your reps by the weight and add up every set. Bodyweight moves count their reps. That total is your score.") {
             ScoreMathDemo(isActive: page == 2, reduceMotion: reduceMotion)
         }
     }
 
     private var beating: some View {
         OnboardingStep(title: "Beat your last score",
-                       message: "Start a workout and last time's score is already the target. Pass it and you'll know.") {
+                       message: "Every workout starts with last session's score as the target. Beat it and you've set a new record.") {
             RecordDemo(isActive: page == 3, reduceMotion: reduceMotion)
         }
     }
 
     private var streaking: some View {
         OnboardingStep(title: "Keep the streak alive",
-                       message: "Every workout you beat adds to your streak. Watch the line climb.") {
+                       message: "Every workout you beat adds to your streak. Fall short and it starts again from one.") {
             StreakDemo(isActive: page == 4, reduceMotion: reduceMotion)
         }
     }
 
     private var goalStep: some View {
-        OnboardingStep(title: "How often do you want to train?",
-                       message: "Hit this many days in a week to keep your week streak. Change it any time.") {
+        OnboardingStep(title: "How often will you train?",
+                       message: "Train this many days each week to keep your weekly streak alive. You can change it anytime.") {
             WeeklyGoalPicker(days: $goalDays)
                 .padding(.horizontal, 4)
         }
@@ -289,10 +291,12 @@ private struct RecordDemo: View {
                     .font(Theme.label(13, weight: .black))
                     .tracking(1.1)
                     .foregroundStyle(progress > 1 ? Theme.accent : .secondary)
+                // No `contentTransition(.numericText())` here on purpose. It's built for
+                // discrete jumps; driving it from a value that changes every frame made the
+                // text re-render mid-transition and read as blurry during the page swipe.
                 Text(VolumeScore.format(12480 * progress))
                     .font(Theme.numeral(40))
                     .monospacedDigit()
-                    .contentTransition(.numericText(value: progress))
             }
         }
         .onChange(of: isActive, initial: true) { _, active in
@@ -303,57 +307,49 @@ private struct RecordDemo: View {
             }
             guard !reduceMotion else { progress = 1.14; showConfetti = false; return }
             progress = 0.35
-            withAnimation(.easeInOut(duration: 1.5)) { progress = 1.14 }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.35) { showConfetti = true }
+            // Held back until the page swipe has settled — animating through the
+            // transition is what made this feel sluggish — then run it briskly.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                guard isActive else { return }
+                withAnimation(.easeOut(duration: 0.8)) { progress = 1.14 }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.85) {
+                guard isActive else { return }
+                showConfetti = true
+            }
         }
     }
 }
 
+/// Streak only — the trend chart that used to sit here pulled attention away from the one
+/// thing this page is about.
 private struct StreakDemo: View {
     let isActive: Bool
     let reduceMotion: Bool
     @State private var streak = 0
 
-    private let trend: [(week: Int, score: Double)] = [
-        (1, 9200), (2, 9800), (3, 10400), (4, 11300), (5, 12480), (6, 13600),
-    ]
-
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 10) {
             Text("🔥 \(streak)")
-                .font(Theme.numeral(56))
+                .font(Theme.numeral(76))
                 .monospacedDigit()
                 .foregroundStyle(Theme.accentGradient)
                 .contentTransition(.numericText(value: Double(streak)))
 
             Text("RECORDS IN A ROW")
-                .font(Theme.label(12, weight: .heavy))
+                .font(Theme.label(13, weight: .heavy))
                 .tracking(1.3)
                 .foregroundStyle(.secondary)
-
-            Chart(trend, id: \.week) { item in
-                LineMark(x: .value("Week", item.week), y: .value("Score", item.score))
-                    .foregroundStyle(Theme.accent)
-                    .lineStyle(StrokeStyle(lineWidth: 3.5, lineCap: .round))
-                    .interpolationMethod(.monotone)
-                AreaMark(x: .value("Week", item.week), y: .value("Score", item.score))
-                    .foregroundStyle(LinearGradient(colors: [Theme.accent.opacity(0.3), .clear],
-                                                    startPoint: .top, endPoint: .bottom))
-                    .interpolationMethod(.monotone)
-            }
-            .chartXAxis(.hidden)
-            .chartYAxis(.hidden)
-            .frame(height: 78)
-            .padding(.horizontal, 20)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Record streak of 4, with scores climbing week over week")
+        .accessibilityLabel("A streak of four records in a row")
         .onChange(of: isActive, initial: true) { _, active in
             guard active else { return }
             guard !reduceMotion else { streak = 4; return }
             streak = 0
             for step in 1...4 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + Double(step) * 0.3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2 + Double(step) * 0.28) {
+                    guard isActive else { return }
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) { streak = step }
                 }
             }

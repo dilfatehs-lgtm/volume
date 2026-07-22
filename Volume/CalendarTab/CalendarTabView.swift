@@ -14,6 +14,7 @@ struct CalendarTabView: View {
     @State private var selectedDay = Calendar.current.startOfDay(for: Date())
     @State private var presented: WorkoutPresentation?
     @State private var addingWorkout = false
+    @State private var pendingDeletion: WorkoutSession?
 
     /// One piece of state for both cases, so a new backdated workout and an edit of an
     /// existing one can't fight over the same `fullScreenCover`.
@@ -53,6 +54,26 @@ struct CalendarTabView: View {
                                   context: context,
                                   unit: unit,
                                   mode: presentation.mode)
+            }
+            .confirmationDialog("Delete this workout?",
+                                isPresented: .init(get: { pendingDeletion != nil },
+                                                   set: { if !$0 { pendingDeletion = nil } }),
+                                titleVisibility: .visible) {
+                Button("Delete", role: .destructive) {
+                    if let session = pendingDeletion {
+                        // Deleting a session cascades to its exercises and sets. Streaks
+                        // and records recompute on their own — nothing is stored.
+                        context.delete(session)
+                        try? context.save()
+                        Haptics.warning()
+                    }
+                    pendingDeletion = nil
+                }
+                Button("Keep it", role: .cancel) { pendingDeletion = nil }
+            } message: {
+                if let session = pendingDeletion {
+                    Text("This permanently deletes \(session.displayName) from \(session.date.formatted(date: .abbreviated, time: .omitted)) and all \(session.totalSets) of its sets. This can't be undone.")
+                }
             }
             .sheet(isPresented: $addingWorkout) {
                 TemplatePickerSheet(templates: templates,
@@ -257,12 +278,22 @@ struct CalendarTabView: View {
                 .accessibilityElement(children: .combine)
             }
 
-            Button {
-                presented = WorkoutPresentation(session: session, mode: .editingPast)
-            } label: {
-                Label("Edit this workout", systemImage: "pencil")
+            HStack(spacing: 10) {
+                Button {
+                    presented = WorkoutPresentation(session: session, mode: .editingPast)
+                } label: {
+                    Label("Edit", systemImage: "pencil")
+                }
+                .buttonStyle(BigButtonStyle(kind: .secondary, size: 16))
+
+                Button(role: .destructive) {
+                    pendingDeletion = session
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+                .buttonStyle(BigButtonStyle(kind: .destructive, size: 16))
+                .accessibilityLabel("Delete \(session.displayName) workout")
             }
-            .buttonStyle(BigButtonStyle(kind: .secondary, size: 16))
         }
         .padding(16)
         .cardBackground()

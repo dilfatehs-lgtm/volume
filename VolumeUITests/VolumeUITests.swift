@@ -175,18 +175,18 @@ final class VolumeUITests: XCTestCase {
         // while a device build queries the real App Store. Assert whichever state is
         // actually on screen — both must be correct, and a paywall that dead-ends is the
         // more dangerous of the two.
-        if app.staticTexts["$29.99 a year"].exists {
-            XCTAssertTrue(app.staticTexts["$4.99 a month"].exists, "Monthly price missing")
+        if app.staticTexts["$50.00 a year"].exists {
+            XCTAssertTrue(app.staticTexts["$5.00 a month"].exists, "Monthly price missing")
             XCTAssertTrue(app.buttons["Try free for 7 days"].exists,
                           "Trial-first framing missing — check the introductory offer")
             XCTAssertFalse(app.staticTexts["Prices couldn't be loaded"].exists)
 
             // Yearly is preselected as the better value.
-            XCTAssertTrue(app.buttons["Yearly, $29.99"].isSelected)
+            XCTAssertTrue(app.buttons["Yearly, $50.00"].isSelected)
 
             // Both plans reachable without scrolling — a paywall that hides the cheaper
             // option below the fold isn't offering a choice.
-            XCTAssertTrue(app.buttons["Monthly, $4.99"].isHittable,
+            XCTAssertTrue(app.buttons["Monthly, $5.00"].isHittable,
                           "Monthly plan should be visible without scrolling")
         } else {
             XCTAssertTrue(app.staticTexts["Prices couldn't be loaded"].exists,

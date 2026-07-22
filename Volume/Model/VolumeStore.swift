@@ -157,6 +157,27 @@ enum VolumeStore {
     }
     #endif
 
+    /// Deletes every workout, template and goal, then puts the exercise library back.
+    ///
+    /// Release-safe, unlike `SampleData.clearAll`, which is DEBUG-only. Sets and exercise
+    /// entries are deleted explicitly rather than relying on the cascade, so nothing is
+    /// left orphaned if a session was already gone.
+    @MainActor
+    static func eraseEverything(in context: ModelContext) {
+        try? context.delete(model: SetEntry.self)
+        try? context.delete(model: ExerciseEntry.self)
+        try? context.delete(model: WorkoutSession.self)
+        try? context.delete(model: WorkoutTemplate.self)
+        try? context.delete(model: Exercise.self)
+        try? context.delete(model: WeeklyGoal.self)
+        try? context.save()
+
+        // A brand-new install has the library and a goal, so a reset should too.
+        ExerciseLibrary.seed(in: context)
+        ensureWeeklyGoalExists(in: context)
+        try? context.save()
+    }
+
     /// Guarantees there is always a goal in force, even for users who skipped onboarding.
     @MainActor
     private static func ensureWeeklyGoalExists(in context: ModelContext) {

@@ -15,6 +15,7 @@ struct ExerciseCardView: View {
     @State private var reps = 8
     @State private var weight: Double?
     @State private var showsWeightField = false
+    @State private var loggingWarmUp = false
     @State private var didSeedDraft = false
     @State private var editingSet: SetEntry?
     @State private var padField: PadField?
@@ -105,6 +106,21 @@ struct ExerciseCardView: View {
 
             VStack(alignment: .trailing, spacing: 6) {
                 ScorePill(score: VolumeScore.score(for: entry, in: unit))
+
+                // Per-exercise target, so you can see overload on this lift rather than
+                // only on the workout as a whole.
+                if let lastScore = model.lastTimeScore(for: entry) {
+                    let current = VolumeScore.score(for: entry, in: unit)
+                    Text(current > lastScore
+                         ? "beat \(VolumeScore.format(lastScore))"
+                         : "last \(VolumeScore.format(lastScore))")
+                        .font(Theme.label(12, weight: .bold))
+                        .foregroundStyle(current > lastScore ? Theme.accent : .secondary)
+                        .accessibilityLabel(current > lastScore
+                                            ? "Beat last time's \(VolumeScore.format(lastScore))"
+                                            : "Last time \(VolumeScore.format(lastScore))")
+                }
+
                 Button {
                     confirmingRemoval = true
                 } label: {
@@ -135,14 +151,27 @@ struct ExerciseCardView: View {
 
                 Text(setSummary(set))
                     .font(Theme.label(17, weight: .bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(set.isWarmUp ? .secondary : .primary)
+
+                if set.isWarmUp {
+                    Text("WARM-UP")
+                        .font(Theme.label(10, weight: .heavy))
+                        .tracking(0.6)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 3)
+                        .background(Capsule().fill(Theme.surface))
+                }
 
                 Spacer()
 
-                Text(VolumeScore.format(VolumeScore.score(for: set, in: unit)))
+                // A dash rather than 0: it scored nothing on purpose, it isn't a mistake.
+                Text(set.isWarmUp ? "—"
+                                  : VolumeScore.format(VolumeScore.score(for: set, in: unit)))
                     .font(Theme.label(16, weight: .heavy))
                     .monospacedDigit()
-                    .foregroundStyle(Theme.accent)
+                    .foregroundStyle(set.isWarmUp ? AnyShapeStyle(.tertiary)
+                                                  : AnyShapeStyle(Theme.accent))
 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12, weight: .bold))
@@ -198,14 +227,41 @@ struct ExerciseCardView: View {
                 .accessibilityHint("For weighted bodyweight exercises, like weighted pull-ups")
             }
 
-            Button {
-                model.addSet(to: entry, reps: reps, weight: showsWeightField ? weight : nil)
-            } label: {
-                Label("Log set", systemImage: "plus")
+            HStack(spacing: 10) {
+                Button {
+                    Haptics.selectionChanged()
+                    withAnimation(.easeOut(duration: 0.2)) { loggingWarmUp.toggle() }
+                } label: {
+                    Text("Warm-up")
+                        .font(Theme.label(15, weight: .heavy))
+                        .foregroundStyle(loggingWarmUp ? .white : .secondary)
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: Theme.minTapTarget)
+                        .background(
+                            Capsule().fill(loggingWarmUp ? AnyShapeStyle(Theme.accentGradient)
+                                                         : AnyShapeStyle(Theme.cardRaised))
+                        )
+                        .overlay(Capsule().strokeBorder(loggingWarmUp ? .clear : Theme.hairline,
+                                                        lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Warm-up set")
+                .accessibilityValue(loggingWarmUp ? "On" : "Off")
+                .accessibilityHint("Warm-up sets are saved but don't count toward your score")
+                .accessibilityAddTraits(loggingWarmUp ? [.isButton, .isSelected] : .isButton)
+
+                Button {
+                    model.addSet(to: entry,
+                                 reps: reps,
+                                 weight: showsWeightField ? weight : nil,
+                                 isWarmUp: loggingWarmUp)
+                } label: {
+                    Label(loggingWarmUp ? "Log warm-up" : "Log set", systemImage: "plus")
+                }
+                .buttonStyle(BigButtonStyle(kind: .primary, size: 18))
+                .disabled(reps <= 0)
+                .accessibilityLabel("\(loggingWarmUp ? "Log warm-up" : "Log set"): \(reps) reps\(showsWeightField && weight != nil ? " at \(formatWeight(weight!)) \(unit.spokenName)" : "")")
             }
-            .buttonStyle(BigButtonStyle(kind: .primary, size: 18))
-            .disabled(reps <= 0)
-            .accessibilityLabel("Log set: \(reps) reps\(showsWeightField && weight != nil ? " at \(formatWeight(weight!)) \(unit.spokenName)" : "")")
         }
     }
 
@@ -260,6 +316,7 @@ struct SetEditorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var reps = 0
     @State private var weight: Double?
+    @State private var isWarmUp = false
     @State private var padField: PadField?
 
     private enum PadField: String, Identifiable {
@@ -289,13 +346,24 @@ struct SetEditorSheet: View {
                                onTapValue: { padField = .weight })
                 }
 
+                Toggle(isOn: $isWarmUp) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Warm-up set")
+                            .font(Theme.label(16, weight: .semibold))
+                        Text("Kept in your log, but doesn't count toward your score.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(minHeight: Theme.minTapTarget)
+
                 Text("Leave the weight at 0 for a bodyweight set.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
 
                 Button("Save changes") {
-                    model.updateSet(set, reps: reps, weight: weight)
+                    model.updateSet(set, reps: reps, weight: weight, isWarmUp: isWarmUp)
                     Haptics.tap()
                     dismiss()
                 }
@@ -334,6 +402,7 @@ struct SetEditorSheet: View {
         .onAppear {
             reps = set.reps
             weight = set.weight(in: unit)
+            isWarmUp = set.isWarmUp
         }
     }
 }

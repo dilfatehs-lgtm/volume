@@ -7,7 +7,16 @@
       "Bash(xcrun simctl *)",
       "Bash(sw_vers -productVersion)",
       "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 16' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 build)",
-      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -showdestinations)"
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -showdestinations)",
+      "Bash(cd \"/Users/dilfateh/Desktop/claude code/gym log app\" && sed -n '/private struct RecordDemo/,/^}/p' Volume/Onboarding/OnboardingView.swift | head -45)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 build)",
+      "Bash(python3 -)",
+      "Bash(python3 -c \"print\\(f'{\\(5*12-50\\)/\\(5*12\\)*100:.0f}% -> badge reads SAVE 17%'\\)\")",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -only-testing:VolumeTests test)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -only-testing:VolumeUITests test)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(xcrun devicectl *)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS,id=00008150-000239601AD9401C' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DDdev -allowProvisioningUpdates build)"
     ]
   }
 }

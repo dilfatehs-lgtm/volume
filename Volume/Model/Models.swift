@@ -168,6 +168,14 @@ final class SetEntry {
     /// The unit this weight was *typed* in, stored alongside it so the number never
     /// drifts through a conversion round-trip.
     var weightUnitRaw: String = WeightUnit.pounds.rawValue
+    /// Warm-up sets are logged and kept in history but contribute nothing to the score.
+    ///
+    /// Without this the incentive is backwards: logging your warm-ups inflates the number,
+    /// so you either skip recording them or pollute the score. Excluding them keeps the
+    /// score meaning *working* volume, so a day of heavy warm-ups can't beat a day of hard
+    /// work sets. Defaults to `false`, so every session logged before this existed keeps
+    /// exactly the score it always had.
+    var isWarmUp: Bool = false
     var loggedAt: Date = Date()
     var entry: ExerciseEntry?
 
@@ -175,11 +183,13 @@ final class SetEntry {
          reps: Int = 0,
          weightValue: Double? = nil,
          unit: WeightUnit = .pounds,
+         isWarmUp: Bool = false,
          loggedAt: Date = Date()) {
         self.order = order
         self.reps = reps
         self.weightValue = weightValue
         self.weightUnitRaw = unit.rawValue
+        self.isWarmUp = isWarmUp
         self.loggedAt = loggedAt
     }
 

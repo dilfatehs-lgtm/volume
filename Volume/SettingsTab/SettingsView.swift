@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State private var goalDays = StreakCalculator.defaultWeeklyGoal
     @State private var didLoadGoal = false
     @State private var managingSubscription = false
+    @State private var confirmingReset = false
 
     var body: some View {
         @Bindable var settings = settings
@@ -61,8 +62,14 @@ struct SettingsView: View {
                     .frame(minHeight: 44)
                     .accessibilityElement(children: .combine)
 
-                    Button("Manage subscription") { managingSubscription = true }
-                        .frame(minHeight: Theme.minTapTarget)
+                    // Only offered to actual subscribers. Apple's manage-subscriptions
+                    // sheet needs an App Store session, so showing it to someone with no
+                    // subscription just produces a sign-in prompt inside the app for no
+                    // reason — which is exactly what it looked like a bug.
+                    if subscriptions.status == .subscribed || subscriptions.status == .expired {
+                        Button("Manage subscription") { managingSubscription = true }
+                            .frame(minHeight: Theme.minTapTarget)
+                    }
 
                     Button("Restore purchases") {
                         Task { await subscriptions.restore() }
@@ -87,12 +94,29 @@ struct SettingsView: View {
                          : "Syncing is off — your workouts are saved on this device only.")
                 }
 
+                Section {
+                    Button("Reset all data", role: .destructive) {
+                        confirmingReset = true
+                    }
+                    .frame(minHeight: Theme.minTapTarget)
+                } footer: {
+                    Text("Deletes every workout, template and setting, and starts you over from the welcome screen.")
+                }
+
                 #if DEBUG
                 developerSection
                 #endif
             }
             .navigationTitle("Settings")
             .manageSubscriptionsSheet(isPresented: $managingSubscription)
+            .confirmationDialog("Reset all data?",
+                                isPresented: $confirmingReset,
+                                titleVisibility: .visible) {
+                Button("Delete everything", role: .destructive) { resetEverything() }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Every workout, template and setting will be permanently deleted and you'll start again from the welcome screen. This can't be undone.")
+            }
             .onAppear(perform: loadGoalIfNeeded)
             .onChange(of: goalDays) { _, newValue in
                 guard didLoadGoal else { return }
@@ -148,6 +172,17 @@ struct SettingsView: View {
         case .expired: "Expired"
         case .never: "Not subscribed"
         }
+    }
+
+    /// Back to a first-launch state.
+    ///
+    /// iOS apps can't relaunch themselves, and shouldn't try — clearing
+    /// `hasCompletedOnboarding` is enough, because `RootView` watches it and swaps back to
+    /// the welcome screen immediately. From the user's side that is a fresh start.
+    private func resetEverything() {
+        VolumeStore.eraseEverything(in: context)
+        settings.resetToDefaults()
+        Haptics.warning()
     }
 
     private func loadGoalIfNeeded() {

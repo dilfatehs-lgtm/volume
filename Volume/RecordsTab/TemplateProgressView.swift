@@ -10,10 +10,44 @@ struct TemplateProgressView: View {
 
     let record: TemplateRecord
 
+    @State private var range: ChartRange = .all
+
+    enum ChartRange: String, CaseIterable, Identifiable {
+        case threeMonths = "3M"
+        case sixMonths = "6M"
+        case year = "1Y"
+        case all = "All"
+
+        var id: String { rawValue }
+
+        var months: Int? {
+            switch self {
+            case .threeMonths: 3
+            case .sixMonths: 6
+            case .year: 12
+            case .all: nil
+            }
+        }
+    }
+
+    /// Points inside the selected window. Falls back to everything rather than showing an
+    /// empty chart when a short range contains fewer than two workouts.
+    private var visiblePoints: [ScorePoint] {
+        guard let months = range.months,
+              let cutoff = Calendar.current.date(byAdding: .month, value: -months, to: Date())
+        else { return record.points }
+        let windowed = record.points.filter { $0.date >= cutoff }
+        return windowed.count >= 2 ? windowed : record.points
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 headline
+
+                if record.points.count >= 2 {
+                    rangePicker
+                }
 
                 if record.points.count < 2 {
                     EmptyStateView(icon: "chart.line.uptrend.xyaxis",
@@ -22,7 +56,9 @@ struct TemplateProgressView: View {
                         .cardBackground()
                 } else {
                     chart
-                    Text("\(record.sessionCount) workouts logged")
+                    Text(visiblePoints.count == record.points.count
+                         ? "\(record.sessionCount) workouts logged"
+                         : "\(visiblePoints.count) of \(record.sessionCount) workouts")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
@@ -71,8 +107,18 @@ struct TemplateProgressView: View {
         .accessibilityElement(children: .combine)
     }
 
+    private var rangePicker: some View {
+        Picker("Time range", selection: $range) {
+            ForEach(ChartRange.allCases) { option in
+                Text(option.rawValue).tag(option)
+            }
+        }
+        .pickerStyle(.segmented)
+        .accessibilityLabel("Time range")
+    }
+
     private var chart: some View {
-        Chart(record.points) { point in
+        Chart(visiblePoints) { point in
             AreaMark(x: .value("Date", point.date),
                      y: .value("Score", point.score))
                 .foregroundStyle(LinearGradient(colors: [Theme.accent.opacity(0.35), .clear],
@@ -117,9 +163,9 @@ struct TemplateProgressView: View {
     }
 
     private var chartAccessibilityValue: String {
-        guard let first = record.points.first, let last = record.points.last else { return "No data" }
+        guard let first = visiblePoints.first, let last = visiblePoints.last else { return "No data" }
         return """
-            \(record.points.count) workouts from \(first.date.formatted(date: .abbreviated, time: .omitted)) \
+            \(visiblePoints.count) workouts from \(first.date.formatted(date: .abbreviated, time: .omitted)) \
             to \(last.date.formatted(date: .abbreviated, time: .omitted)). \
             First \(VolumeScore.format(first.score)), latest \(VolumeScore.format(last.score)), \
             best \(VolumeScore.format(record.bestScore)).

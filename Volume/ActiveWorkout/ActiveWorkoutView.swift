@@ -8,6 +8,7 @@ struct ActiveWorkoutView: View {
     @State private var showingPicker = false
     @State private var summary: WorkoutSummary?
     @State private var confirmingFinish = false
+    @State private var confirmingDiscard = false
     @State private var editingDate = false
     @State private var draftDate = Date()
 
@@ -76,6 +77,16 @@ struct ActiveWorkoutView: View {
                     }
                     .buttonStyle(.bigSecondary)
 
+                    // Closing keeps a workout in progress; this is the way to be rid of one.
+                    Button(role: .destructive) {
+                        confirmingDiscard = true
+                    } label: {
+                        Label(mode == .editingPast ? "Delete this workout" : "Discard workout",
+                              systemImage: "trash")
+                    }
+                    .buttonStyle(.bigDestructive)
+                    .padding(.top, 4)
+
                     Color.clear.frame(height: 8)
                 }
                 .padding(.horizontal, Theme.gutter)
@@ -119,6 +130,20 @@ struct ActiveWorkoutView: View {
                 Button("Keep going", role: .cancel) {}
             } message: {
                 Text("Your score will be saved as \(VolumeScore.format(model.liveScore)).")
+            }
+            .confirmationDialog(mode == .editingPast ? "Delete this workout?"
+                                                     : "Discard this workout?",
+                                isPresented: $confirmingDiscard,
+                                titleVisibility: .visible) {
+                Button("Delete", role: .destructive) {
+                    model.discard()
+                    dismiss()
+                }
+                Button("Keep it", role: .cancel) {}
+            } message: {
+                Text(model.isEmpty
+                     ? "Nothing has been logged yet, so nothing will be lost."
+                     : "This permanently deletes the workout and all \(model.session.totalSets) of its sets. This can't be undone.")
             }
         }
         .overlay {

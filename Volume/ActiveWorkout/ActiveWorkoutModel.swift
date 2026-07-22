@@ -122,6 +122,14 @@ final class ActiveWorkoutModel {
         previousSession != nil && session.entriesSorted.isEmpty
     }
 
+    /// What this exercise scored last time, so overload is visible per exercise and not
+    /// only across the whole workout. `nil` when it wasn't performed last time.
+    func lastTimeScore(for entry: ExerciseEntry) -> Double? {
+        guard let previous = lastTime(for: entry) else { return nil }
+        let score = VolumeScore.score(for: previous, in: unit)
+        return score > 0 ? score : nil
+    }
+
     /// The same exercise in the previous session of this template, if it was performed.
     /// Used to pre-fill the next set and to show "Last time: 8 × 135 lb" — a statement of
     /// what happened, never a suggestion of what to do.
@@ -174,11 +182,15 @@ final class ActiveWorkoutModel {
     }
 
     @discardableResult
-    func addSet(to entry: ExerciseEntry, reps: Int, weight: Double?) -> SetEntry {
+    func addSet(to entry: ExerciseEntry,
+                reps: Int,
+                weight: Double?,
+                isWarmUp: Bool = false) -> SetEntry {
         let set = SetEntry(order: entry.nextSetOrder,
                            reps: max(reps, 0),
                            weightValue: weight,
-                           unit: unit)
+                           unit: unit,
+                           isWarmUp: isWarmUp)
         context.insert(set)
         entry.sets = (entry.sets ?? []) + [set]
         Haptics.setLogged()
@@ -194,10 +206,11 @@ final class ActiveWorkoutModel {
         refreshHistory()
     }
 
-    func updateSet(_ set: SetEntry, reps: Int, weight: Double?) {
+    func updateSet(_ set: SetEntry, reps: Int, weight: Double?, isWarmUp: Bool) {
         set.reps = max(reps, 0)
         set.weightValue = weight
         set.weightUnitRaw = unit.rawValue
+        set.isWarmUp = isWarmUp
         commit()
     }
 
@@ -233,7 +246,8 @@ final class ActiveWorkoutModel {
                 let set = SetEntry(order: sourceSet.order,
                                    reps: sourceSet.reps,
                                    weightValue: sourceSet.weight(in: unit),
-                                   unit: unit)
+                                   unit: unit,
+                                   isWarmUp: sourceSet.isWarmUp)
                 context.insert(set)
                 copiedSets.append(set)
             }
@@ -280,6 +294,14 @@ final class ActiveWorkoutModel {
         guard !session.isCompleted, isEmpty else { return }
         context.delete(session)
         save()
+    }
+
+    /// Throws the whole workout away, sets and all. Deleting a session cascades to its
+    /// exercises and sets, so nothing is orphaned.
+    func discard() {
+        context.delete(session)
+        save()
+        Haptics.warning()
     }
 
     // MARK: - Score evaluation

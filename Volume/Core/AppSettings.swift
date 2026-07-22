@@ -83,4 +83,16 @@ final class AppSettings {
     func resetForOnboarding() {
         hasCompletedOnboarding = false
     }
+
+    /// Everything back to first-launch values.
+    ///
+    /// Clearing `hasCompletedOnboarding` is what actually restarts the experience —
+    /// `RootView` observes it and swaps straight back to the welcome screen. iOS apps
+    /// can't relaunch themselves, and don't need to.
+    func resetToDefaults() {
+        appearance = .automatic
+        unit = .localeDefault
+        debugUnlocked = false
+        hasCompletedOnboarding = false
+    }
 }

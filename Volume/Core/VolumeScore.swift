@@ -12,6 +12,9 @@ import Foundation
 enum VolumeScore {
 
     static func score(for set: SetEntry, in unit: WeightUnit) -> Double {
+        // Warm-ups are part of the log but not part of the work. Excluding them here is
+        // enough — exercise and session totals are sums of this, so they follow.
+        guard !set.isWarmUp else { return 0 }
         guard let weight = set.weightValue, weight > 0 else {
             return Double(set.reps)
         }

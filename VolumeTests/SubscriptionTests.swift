@@ -61,8 +61,8 @@ final class SubscriptionTests: XCTestCase {
         let annual = try XCTUnwrap(manager.annual, "Missing \(SubscriptionManager.annualID)")
         let monthly = try XCTUnwrap(manager.monthly, "Missing \(SubscriptionManager.monthlyID)")
 
-        XCTAssertEqual(annual.displayPrice, "$29.99")
-        XCTAssertEqual(monthly.displayPrice, "$4.99")
+        XCTAssertEqual(annual.displayPrice, "$50.00")
+        XCTAssertEqual(monthly.displayPrice, "$5.00")
 
         XCTAssertEqual(annual.subscription?.subscriptionPeriod.unit, .year)
         XCTAssertEqual(annual.subscription?.subscriptionPeriod.value, 1)

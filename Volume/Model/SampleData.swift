@@ -146,13 +146,7 @@ enum SampleData {
 
     @MainActor
     static func clearAll(in context: ModelContext) {
-        try? context.delete(model: SetEntry.self)
-        try? context.delete(model: ExerciseEntry.self)
-        try? context.delete(model: WorkoutSession.self)
-        try? context.delete(model: WorkoutTemplate.self)
-        try? context.delete(model: Exercise.self)
-        try? context.delete(model: WeeklyGoal.self)
-        try? context.save()
+        VolumeStore.eraseEverything(in: context)
     }
 }
 #endif
