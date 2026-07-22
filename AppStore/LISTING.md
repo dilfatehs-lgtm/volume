@@ -76,6 +76,55 @@ Volume is US$5/month or US$50/year, with a 7-day free trial. Your data is never 
 you stop subscribing.
 ```
 
+## Every remaining field, answered
+
+**Version 1.0 page**
+
+| Field | Answer |
+|---|---|
+| Version | `1.0` |
+| Copyright | `2026 Dilfateh Singh Shergill` (no © — Apple adds it) |
+| Support URL | `https://dilfatehs-lgtm.github.io/volume/` |
+| Marketing URL | same, or leave empty (optional) |
+| Routing App Coverage File | empty — maps apps only |
+
+**App Review Information**
+
+| Field | Answer |
+|---|---|
+| Sign-in required | **Unticked** — there is no login |
+| First / Last name | Dilfateh / Shergill |
+| Phone | your real mobile |
+| Email | `dilfatehs@gmail.com` |
+| Notes | the review-notes block further down this file |
+| Attachment | empty |
+
+**Version Release** — *Manually release this version*, so going live is your call rather
+than automatic the moment review passes. Phased Release off (it only applies to updates).
+
+**General ▸ App Information**
+
+| Field | Answer |
+|---|---|
+| Content Rights | **No** third-party content |
+| License Agreement | Apple's **Standard EULA** (the default) |
+
+The custom Terms are hosted and linked inside the app, which is what satisfies the
+subscription-disclosure requirement; Apple's standard agreement on top is normal.
+
+**Pricing and Availability**
+
+| Field | Answer |
+|---|---|
+| Price | **Free** — the download is free, revenue comes from the subscription |
+| Availability | All countries |
+| Pre-Orders | Off |
+
+Setting a price here would make the app paid *and* subscription-gated.
+
+**IDFA question at submission** — "Does this app use the Advertising Identifier?" → **No.**
+No ad SDK, no tracking, nothing in the binary that touches it.
+
 ## Keywords (100 max, comma-separated, no spaces)
 
 ```

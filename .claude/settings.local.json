@@ -46,7 +46,8 @@
       "Bash(pkill -f \"gh auth login\")",
       "Bash(git push *)",
       "Bash(gh api *)",
-      "Bash(git commit -q -m 'Record EU DSA trader decision in the listing notes *)"
+      "Bash(git commit -q -m 'Record EU DSA trader decision in the listing notes *)",
+      "Bash(git commit -q -m 'Answer every remaining App Store Connect field in the listing notes *)"
     ]
   }
 }
