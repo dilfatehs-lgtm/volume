@@ -13,8 +13,8 @@ Draft values for the listing. Character limits noted; all current values are wit
 | **Bundle ID** | `com.hibeamgroup.volume` | — |
 | **Primary category** | Health & Fitness | — |
 | **Secondary category** | *(leave empty)* | — |
-| **Support URL** | *(needs a page — see below)* | — |
-| **Privacy Policy URL** | *(GitHub Pages — see below)* | — |
+| **Support URL** | `https://dilfateh-lgtm.github.io/volume/` | — |
+| **Privacy Policy URL** | `https://dilfateh-lgtm.github.io/volume/privacy.html` | — |
 
 The home-screen name stays **Volume**; the longer name is only for the store, where names
 must be globally unique.
@@ -174,10 +174,8 @@ no data whatsoever.
 
 ## Still needed before submitting
 
-- [ ] **Privacy Policy URL** live and public (`docs/privacy.md` is written)
-- [ ] **Terms / EULA URL** live and public (`docs/terms.md` is written)
-- [ ] Both URLs pasted into `LegalLinks` in `Volume/Subscription/PaywallView.swift`
-- [ ] **Support URL** — can be the same site, or a page with a contact email
+- [ ] Push the repo to GitHub and turn on Pages (see SUBMISSION-STEPS.md), so all three
+      URLs go live. They are already written into the app and the values above.
 - [ ] Paid Apps agreement active
 - [ ] Archive and upload a **Release** build, then TestFlight it to your own phone
 - [ ] Sandbox-test purchase → trial → restore end to end

@@ -1,0 +1,79 @@
+/* Shared styling for the Volume legal + support pages. Self-contained: no web fonts, no
+   CDN, nothing external — so the pages always load, including for App Review. */
+
+:root {
+  --accent: #FF6B1A;
+  --text: #16161a;
+  --muted: #5c5c66;
+  --bg: #ffffff;
+  --card: #f6f6f8;
+  --hairline: #e3e3e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #FF7F33;
+    --text: #f2f2f5;
+    --muted: #a0a0ad;
+    --bg: #0b0b0c;
+    --card: #17171a;
+    --hairline: #2c2c32;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2.5rem 1.25rem 4rem;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+main { max-width: 42rem; margin: 0 auto; }
+
+.logo {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 40px;
+  margin-bottom: 1.5rem;
+}
+.logo span {
+  display: block;
+  width: 13px;
+  border-radius: 7px;
+  background: var(--accent);
+}
+.logo span:nth-child(1) { height: 44%; }
+.logo span:nth-child(2) { height: 72%; }
+.logo span:nth-child(3) { height: 100%; opacity: 0.8; }
+
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.35rem; letter-spacing: -0.02em; }
+h2 { font-size: 1.2rem; margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+.updated { color: var(--muted); font-size: 0.95rem; margin: 0 0 2rem; }
+p, li { color: var(--text); }
+strong { font-weight: 650; }
+a { color: var(--accent); text-underline-offset: 3px; }
+
+ul { padding-left: 1.2rem; }
+li { margin: 0.35rem 0; }
+
+.lede {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+}
+
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hairline);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+footer a { margin-right: 1rem; }

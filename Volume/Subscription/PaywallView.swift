@@ -267,8 +267,11 @@ struct PurchaseFooter: View {
     }
 }
 
+/// Published from `docs/` in this repo via GitHub Pages. App Review rejects
+/// auto-renewable subscriptions whose Terms and Privacy links don't load, so these must
+/// stay live and must match what's entered in App Store Connect.
 enum LegalLinks {
-    // Placeholders — swap for your real pages before submitting. See the README.
-    static let terms = URL(string: "https://volume.app/terms")!
-    static let privacy = URL(string: "https://volume.app/privacy")!
+    static let terms = URL(string: "https://dilfateh-lgtm.github.io/volume/terms.html")!
+    static let privacy = URL(string: "https://dilfateh-lgtm.github.io/volume/privacy.html")!
+    static let support = URL(string: "https://dilfateh-lgtm.github.io/volume/")!
 }
