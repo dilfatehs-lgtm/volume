@@ -114,9 +114,13 @@ final class VolumeUITests: XCTestCase {
         XCTAssertTrue(logSet.waitForExistence(timeout: 10), "No Log set button")
         logSet.tap()
 
-        // Transient by design, so grab it immediately.
+        // Transient by design, so check for it immediately...
         let celebration = element(labelStartingWith: "New record")
         let appeared = celebration.waitForExistence(timeout: 5)
+        // ...but let the scale-and-fade entrance finish before the screenshot. Capturing
+        // the instant it exists catches it half-transparent, which is useless as an App
+        // Store asset. Well inside the ~3.2s auto-dismiss.
+        Thread.sleep(forTimeInterval: 0.7)
         capture("08-NewRecord")
         if !appeared {
             let dump = XCTAttachment(string: app.debugDescription)
