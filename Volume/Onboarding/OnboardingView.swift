@@ -96,7 +96,7 @@ struct OnboardingView: View {
 
     private var logging: some View {
         OnboardingStep(title: "Log your sets",
-                       message: "Punch in your reps and the weight, if there is one. That's it — we do the rest.") {
+                       message: "Punch in your reps and the weight. That's it — we do the rest.") {
             SetRowsDemo(isActive: page == 1, reduceMotion: reduceMotion)
         }
     }
