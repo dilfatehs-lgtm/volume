@@ -271,7 +271,7 @@ struct PurchaseFooter: View {
 /// auto-renewable subscriptions whose Terms and Privacy links don't load, so these must
 /// stay live and must match what's entered in App Store Connect.
 enum LegalLinks {
-    static let terms = URL(string: "https://dilfateh-lgtm.github.io/volume/terms.html")!
-    static let privacy = URL(string: "https://dilfateh-lgtm.github.io/volume/privacy.html")!
-    static let support = URL(string: "https://dilfateh-lgtm.github.io/volume/")!
+    static let terms = URL(string: "https://dilfatehs-lgtm.github.io/volume/terms.html")!
+    static let privacy = URL(string: "https://dilfatehs-lgtm.github.io/volume/privacy.html")!
+    static let support = URL(string: "https://dilfatehs-lgtm.github.io/volume/")!
 }

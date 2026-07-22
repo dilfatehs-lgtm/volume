@@ -20,7 +20,23 @@
       "Bash(rm -rf /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/shots.xcresult)",
       "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -resultBundlePath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/shots.xcresult -only-testing:VolumeUITests test)",
       "Bash(cd /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad && cat ../tasks/bxhkac1d1.output; grep -E \"Executed .* tests|\\\\*\\\\* TEST\" shots.log | sed 's/^ *//' | sort -u | tail -3)",
-      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -resultBundlePath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/shots.xcresult -only-testing:VolumeUITests/VolumeUITests/testBeatingTheScoreCelebratesAndSummarises test)"
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -resultBundlePath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/shots.xcresult -only-testing:VolumeUITests/VolumeUITests/testBeatingTheScoreCelebratesAndSummarises test)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://github.com/dilfateh-lgtm/volume)",
+      "Bash(curl -s https://api.github.com/users/dilfateh-lgtm)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('login','NOT FOUND'\\), '|', d.get\\('message',''\\)\\)\")",
+      "Bash(curl -s https://api.github.com/repos/dilfateh-lgtm/volume)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('name:', d.get\\('full_name','—'\\), '| private:', d.get\\('private','?'\\), '|', d.get\\('message',''\\)\\)\")",
+      "Bash(curl -s \"https://api.github.com/users/dilfateh-lgtm/repos?per_page=20\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\([r['name'] for r in d] if isinstance\\(d,list\\) else d\\)\")",
+      "Bash(curl -s https://api.github.com/users/dilfatehs-lgtm)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('login:', d.get\\('login','NOT FOUND'\\)\\)\")",
+      "Bash(curl -s https://api.github.com/repos/dilfatehs-lgtm/volume)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('full_name:', d.get\\('full_name','—'\\), '| private:', d.get\\('private','?'\\), '| default_branch:', d.get\\('default_branch','—'\\), '|', d.get\\('message',''\\)\\)\")",
+      "Bash(git credential *)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Correct GitHub Pages URLs to dilfatehs-lgtm *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)"
     ]
   }
 }

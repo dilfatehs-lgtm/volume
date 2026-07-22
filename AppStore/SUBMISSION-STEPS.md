@@ -21,13 +21,13 @@ review, and this also gets your code off this Mac for the first time.
 | Initialise with README | **No** (leave every checkbox off) |
 
 > The name must be `volume` exactly. The URLs baked into the app are
-> `dilfateh-lgtm.github.io/**volume**/…`. A different name means changing them in
+> `dilfatehs-lgtm.github.io/**volume**/…`. A different name means changing them in
 > `PaywallView.swift` and re-uploading the build.
 
 **1b. Connect and push** — tell Claude "the repo is created" and it runs:
 
 ```bash
-git remote add origin https://github.com/dilfateh-lgtm/volume.git
+git remote add origin https://github.com/dilfatehs-lgtm/volume.git
 git branch -M main
 git push -u origin main
 ```
@@ -43,9 +43,9 @@ Personal access tokens ▸ Tokens (classic) ▸ Generate new token ▸ tick **re
 
 Wait 1–2 minutes, then check all three load:
 
-- https://dilfateh-lgtm.github.io/volume/ ← Support URL
-- https://dilfateh-lgtm.github.io/volume/privacy.html ← Privacy Policy URL
-- https://dilfateh-lgtm.github.io/volume/terms.html ← Terms / EULA
+- https://dilfatehs-lgtm.github.io/volume/ ← Support URL
+- https://dilfatehs-lgtm.github.io/volume/privacy.html ← Privacy Policy URL
+- https://dilfatehs-lgtm.github.io/volume/terms.html ← Terms / EULA
 
 **They must return real pages, not 404s.** A dead legal link is a guaranteed rejection.
 

@@ -13,8 +13,8 @@ Draft values for the listing. Character limits noted; all current values are wit
 | **Bundle ID** | `com.hibeamgroup.volume` | — |
 | **Primary category** | Health & Fitness | — |
 | **Secondary category** | *(leave empty)* | — |
-| **Support URL** | `https://dilfateh-lgtm.github.io/volume/` | — |
-| **Privacy Policy URL** | `https://dilfateh-lgtm.github.io/volume/privacy.html` | — |
+| **Support URL** | `https://dilfatehs-lgtm.github.io/volume/` | — |
+| **Privacy Policy URL** | `https://dilfatehs-lgtm.github.io/volume/privacy.html` | — |
 
 The home-screen name stays **Volume**; the longer name is only for the store, where names
 must be globally unique.
