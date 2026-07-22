@@ -51,7 +51,15 @@
       "Bash(xcodebuild archive *)",
       "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 test)",
       "Bash(python3 -c ' *)",
-      "Bash(grep -rn 'US\\\\$5[^0-9.]\\\\|US\\\\$50[^0-9.]' docs/ AppStore/ README.md)"
+      "Bash(grep -rn 'US\\\\$5[^0-9.]\\\\|US\\\\$50[^0-9.]' docs/ AppStore/ README.md)",
+      "Bash(rm -rf /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/pw2.xcresult)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -resultBundlePath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/pw2.xcresult -only-testing:VolumeUITests/VolumeUITests/testPaywallShowsRealStoreKitPrices test)",
+      "Bash(head -3)",
+      "Bash(rm -rf __TRACKED_VAR__/pw2)",
+      "Bash(mkdir __TRACKED_VAR__/pw2)",
+      "Bash(xcrun xcresulttool *)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -only-testing:VolumeUITests/VolumeUITests/testPaywallShowsRealStoreKitPrices test)",
+      "Bash(git commit -q -m 'Wait for StoreKit prices in the paywall UI test *)"
     ]
   }
 }

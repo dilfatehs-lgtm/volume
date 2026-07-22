@@ -182,7 +182,9 @@ final class VolumeUITests: XCTestCase {
             NSPredicate(format: "label ENDSWITH %@", "a year")
         ).firstMatch
 
-        if yearlyPrice.exists {
+        // Wait rather than check instantly: the paywall renders as soon as it's on screen,
+        // but StoreKit fills the prices in a moment later. Checking immediately raced it.
+        if yearlyPrice.waitForExistence(timeout: 10) {
             XCTAssertTrue(app.staticTexts.matching(
                 NSPredicate(format: "label ENDSWITH %@", "a month")
             ).firstMatch.exists, "Monthly price missing")
