@@ -153,9 +153,9 @@ struct PlanPicker: View {
 
     private func priceCaption(_ product: Product) -> String {
         if product.id == SubscriptionManager.annualID {
-            return "\(product.displayPrice) a year"
+            return "\(product.displayPriceWithCurrency) a year"
         }
-        return "\(product.displayPrice) a month"
+        return "\(product.displayPriceWithCurrency) a month"
     }
 
     /// Only shown when both prices are known, so it can never be a made-up number.
@@ -260,10 +260,11 @@ struct PurchaseFooter: View {
 
     private var fineprint: String {
         guard let product else { return "Subscription renews automatically. Cancel any time." }
+        let period = product.id == SubscriptionManager.annualID ? " a year" : " a month"
         if trialAvailable {
-            return "7 days free, then \(product.displayPrice)\(product.id == SubscriptionManager.annualID ? " a year" : " a month"). Cancel any time."
+            return "7 days free, then \(product.displayPriceWithCurrency)\(period). Cancel any time."
         }
-        return "\(product.displayPrice)\(product.id == SubscriptionManager.annualID ? " a year" : " a month"). Cancel any time."
+        return "\(product.displayPriceWithCurrency)\(period). Cancel any time."
     }
 }
 

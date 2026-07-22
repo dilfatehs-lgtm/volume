@@ -174,23 +174,28 @@ final class VolumeUITests: XCTestCase {
         XCTAssertTrue(app.links["Terms"].exists || app.buttons["Terms"].exists)
         XCTAssertTrue(app.links["Privacy"].exists || app.buttons["Privacy"].exists)
 
-        // Whether products load depends on the environment: the hand-authored
-        // Products.storekit registers nothing under the iOS 26 SDK (see SubscriptionTests),
-        // while a device build queries the real App Store. Assert whichever state is
-        // actually on screen — both must be correct, and a paywall that dead-ends is the
-        // more dangerous of the two.
-        if app.staticTexts["$50.00 a year"].exists {
-            XCTAssertTrue(app.staticTexts["$5.00 a month"].exists, "Monthly price missing")
+        // Assert whichever state is actually on screen — both must be correct, and a
+        // paywall that dead-ends is the more dangerous of the two. Matching on the period
+        // wording rather than an exact amount, because StoreKit snaps to real App Store
+        // price points ($5.00 becomes $4.99) and localises per storefront.
+        let yearlyPrice = app.staticTexts.matching(
+            NSPredicate(format: "label ENDSWITH %@", "a year")
+        ).firstMatch
+
+        if yearlyPrice.exists {
+            XCTAssertTrue(app.staticTexts.matching(
+                NSPredicate(format: "label ENDSWITH %@", "a month")
+            ).firstMatch.exists, "Monthly price missing")
             XCTAssertTrue(app.buttons["Try free for 7 days"].exists,
                           "Trial-first framing missing — check the introductory offer")
             XCTAssertFalse(app.staticTexts["Prices couldn't be loaded"].exists)
 
-            // Yearly is preselected as the better value.
-            XCTAssertTrue(app.buttons["Yearly, $50.00"].isSelected)
-
-            // Both plans reachable without scrolling — a paywall that hides the cheaper
-            // option below the fold isn't offering a choice.
-            XCTAssertTrue(app.buttons["Monthly, $5.00"].isHittable,
+            // Yearly is preselected as the better value, and both plans must be reachable
+            // without scrolling — a paywall hiding the cheaper option isn't offering a choice.
+            let yearlyRow = element(labelStartingWith: "Yearly,")
+            let monthlyRow = element(labelStartingWith: "Monthly,")
+            XCTAssertTrue(yearlyRow.isSelected, "Yearly should be preselected")
+            XCTAssertTrue(monthlyRow.isHittable,
                           "Monthly plan should be visible without scrolling")
         } else {
             XCTAssertTrue(app.staticTexts["Prices couldn't be loaded"].exists,

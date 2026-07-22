@@ -121,8 +121,8 @@ Add two subscriptions inside it, exactly as in LISTING.md:
 
 | Product ID | Duration | Price |
 |---|---|---|
-| `com.volume.pro.monthly` | 1 month | US$5 |
-| `com.volume.pro.annual` | 1 year | US$50 |
+| `com.volume.pro.monthly` | 1 month | US$4.99 |
+| `com.volume.pro.annual` | 1 year | US$49.99 |
 
 For **each** one:
 1. **Subscription Prices** ▸ set the price
@@ -162,7 +162,7 @@ Account. On your phone: Settings ▸ Developer ▸ **Sandbox Apple Account** ▸
 Now test the whole money path, which **has never run for real** — every previous test used a
 local StoreKit file:
 
-- [ ] Paywall shows **$5** and **$50** from App Store Connect, not the local file
+- [ ] Paywall shows **$4.99** and **$49.99** from App Store Connect, not the local file
 - [ ] "Try free for 7 days" starts the trial and unlocks the app
 - [ ] Force-quit and relaunch — still unlocked, no paywall flash
 - [ ] **Restore purchases** works from a fresh install

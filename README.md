@@ -106,8 +106,8 @@ to the scheme's Run action, so the paywall shows real prices in the simulator):
 
 | Product ID | Price | Period | Trial |
 |---|---|---|---|
-| `com.volume.pro.monthly` | US$5 | 1 month | 7 days free |
-| `com.volume.pro.annual` | US$50 | 1 year | 7 days free |
+| `com.volume.pro.monthly` | US$4.99 | 1 month | 7 days free |
+| `com.volume.pro.annual` | US$49.99 | 1 year | 7 days free |
 
 To use real products:
 

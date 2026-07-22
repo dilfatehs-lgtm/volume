@@ -72,7 +72,7 @@ doesn't tell you what to do — it keeps the log and shows you the number.
 
 SUBSCRIPTION
 
-Volume is US$5/month or US$50/year, with a 7-day free trial. Your data is never deleted if
+Volume is US$4.99/month or US$49.99/year, with a 7-day free trial. Your data is never deleted if
 you stop subscribing.
 ```
 
@@ -176,8 +176,8 @@ Create one **subscription group** — suggested reference name `Volume Pro`.
 
 | Product ID | Reference name | Duration | Price | Intro offer |
 |---|---|---|---|---|
-| `com.volume.pro.monthly` | Volume Pro Monthly | 1 month | US$5 | 7 days free |
-| `com.volume.pro.annual` | Volume Pro Annual | 1 year | US$50 | 7 days free |
+| `com.volume.pro.monthly` | Volume Pro Monthly | 1 month | US$4.99 | 7 days free |
+| `com.volume.pro.annual` | Volume Pro Annual | 1 year | US$49.99 | 7 days free |
 
 Each needs a localized **display name** and **description**, plus a review screenshot (any
 paywall screenshot works — `AppStore/screenshots-6.9/` has them).

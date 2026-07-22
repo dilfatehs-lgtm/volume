@@ -47,7 +47,11 @@
       "Bash(git push *)",
       "Bash(gh api *)",
       "Bash(git commit -q -m 'Record EU DSA trader decision in the listing notes *)",
-      "Bash(git commit -q -m 'Answer every remaining App Store Connect field in the listing notes *)"
+      "Bash(git commit -q -m 'Answer every remaining App Store Connect field in the listing notes *)",
+      "Bash(xcodebuild archive *)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 test)",
+      "Bash(python3 -c ' *)",
+      "Bash(grep -rn 'US\\\\$5[^0-9.]\\\\|US\\\\$50[^0-9.]' docs/ AppStore/ README.md)"
     ]
   }
 }

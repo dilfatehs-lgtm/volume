@@ -2,6 +2,18 @@ import Foundation
 import OSLog
 import StoreKit
 
+extension Product {
+    /// Price with its ISO currency code — "$5.00 USD" rather than a bare "$5.00".
+    ///
+    /// `displayPrice` is already localised to the storefront, but a lone "$" is ambiguous:
+    /// USD, CAD, AUD, NZD, HKD and SGD all use it. Taking the code from the product itself
+    /// rather than hardcoding "USD" keeps this correct in every storefront — a UK customer
+    /// sees "£4.99 GBP", not a wrong currency label.
+    var displayPriceWithCurrency: String {
+        "\(displayPrice) \(priceFormatStyle.currencyCode)"
+    }
+}
+
 /// StoreKit 2 entitlement handling: load products, listen for transactions, know whether
 /// the user currently has access.
 @MainActor
