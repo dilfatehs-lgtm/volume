@@ -201,3 +201,41 @@ Two things worth doing once, easy to forget:
    until you do this — the development schema doesn't carry over.
 2. Change `aps-environment` in `Volume/Volume.entitlements` from `development` to
    `production` if push-driven sync misbehaves in the live build.
+
+---
+
+## STATUS: submitted 22 July 2026
+
+4 items in review: **iOS App 1.0 (2)**, both subscriptions, and the **Volume Pro group**.
+Review takes up to 48 hours; an email arrives when it completes. Release is set to
+**manual**, so approval lands at *Pending Developer Release* and nothing goes public until
+you press the button.
+
+### Two gotchas hit during submission, for next time
+
+- **The subscription *group* is its own submittable item** and needs its own Localization
+  (a Subscription Group Display Name). Without it, submission fails with "your
+  auto-renewable subscription must be submitted with its subscription group", which does
+  not obviously mean "the group is missing a display name".
+- **App Privacy has a separate Publish button.** Answering the questions isn't enough; the
+  requirement stays unmet until it's published.
+
+### Do this the moment it's approved, before releasing
+
+**CloudKit Console ▸ Schema ▸ Deploy to Production.** The development schema does not carry
+over. Without this, iCloud sync fails silently for every real user while continuing to work
+perfectly on your own phone — the failure mode is invisible to you.
+
+### If it's rejected
+
+Send the exact rejection text. The usual causes for subscription apps are already covered:
+legal links live and verified, restore button on the paywall, prices and trial terms shown
+before purchase, subscription details in terms.html, privacy manifest in the binary.
+
+### Known-good state at submission
+
+- 81 tests green (74 unit + 7 UI) on Xcode 26.6 / iOS 26.5
+- Prices **$4.99 / $49.99** with a 7-day free trial, consistent across App Store Connect,
+  `Products.storekit`, terms.html, the store description and the README
+- Legal pages live at `https://dilfatehs-lgtm.github.io/volume/`
+- Screenshots regenerate with `swift AppStore/make-screenshots.swift AppStore/raw-captures AppStore/screenshots-6.9`
