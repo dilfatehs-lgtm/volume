@@ -201,9 +201,9 @@ the real app with real data by the UI test suite.
 |---|---|---|
 | 1 | `1-home.png` | Your whole workout, **one number** |
 | 2 | `2-active-workout.png` | Log a set **in two taps** |
-| 3 | `3-new-record.png` | Beat it, and **you'll know** |
-| 4 | `4-summary.png` | See how much **you beat it by** |
-| 5 | `5-records.png` | Every record **you've ever set** |
+| 3 | `3-new-record.png` | Beat your score, **progressively overload** |
+| 4 | `4-summary.png` | Set new **records** |
+| 5 | `5-records.png` | Track your **progress** |
 | 6 | `6-calendar.png` | Every session, **all in one place** |
 
 Marketing composites: headline over the real device capture on a near-black background,

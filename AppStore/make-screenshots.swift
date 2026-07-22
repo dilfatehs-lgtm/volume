@@ -19,9 +19,9 @@ struct Shot {
 let shots = [
     Shot(file: "1-home.png",            line1: "Your whole workout,",  line2: "one number"),
     Shot(file: "6-active-workout.png",  line1: "Log a set",            line2: "in two taps"),
-    Shot(file: "2-new-record.png",      line1: "Beat it, and",         line2: "you'll know"),
-    Shot(file: "3-summary.png",         line1: "See how much",         line2: "you beat it by"),
-    Shot(file: "4-records.png",         line1: "Every record",         line2: "you've ever set"),
+    Shot(file: "2-new-record.png",      line1: "Beat your score,",     line2: "progressively overload"),
+    Shot(file: "3-summary.png",         line1: "Set new",              line2: "records"),
+    Shot(file: "4-records.png",         line1: "Track your",           line2: "progress"),
     Shot(file: "5-calendar.png",        line1: "Every session,",       line2: "all in one place"),
 ]
 
@@ -29,6 +29,24 @@ func roundedFont(_ size: CGFloat, _ weight: NSFont.Weight) -> NSFont {
     let base = NSFont.systemFont(ofSize: size, weight: weight)
     guard let d = base.fontDescriptor.withDesign(.rounded) else { return base }
     return NSFont(descriptor: d, size: size) ?? base
+}
+
+/// Largest size at which every line still fits the available width.
+///
+/// Headlines vary a lot in length — "records" against "progressively overload" — and a
+/// fixed size either wraps the long ones mid-phrase or leaves the short ones looking timid.
+/// Sizing per screenshot keeps each headline as large as it can be.
+func fittingSize(_ lines: [String], maxWidth: CGFloat, from start: CGFloat) -> CGFloat {
+    var size = start
+    while size > 56 {
+        let font = roundedFont(size, .black)
+        let widest = lines
+            .map { ($0 as NSString).size(withAttributes: [.font: font, .kern: -2.0]).width }
+            .max() ?? 0
+        if widest <= maxWidth { return size }
+        size -= 2
+    }
+    return size
 }
 
 let orange = NSColor(srgbRed: 1.0, green: 0.42, blue: 0.10, alpha: 1)
@@ -79,15 +97,19 @@ for (index, shot) in shots.enumerated() {
     para.alignment = .center
     para.lineSpacing = -14
 
+    let headlineWidth = CGFloat(W) - 160
+    let size = fittingSize([shot.line1, shot.line2], maxWidth: headlineWidth, from: 104)
+    let font = roundedFont(size, .black)
+
     let text = NSMutableAttributedString()
     text.append(NSAttributedString(string: shot.line1 + "\n", attributes: [
-        .font: roundedFont(104, .black),
+        .font: font,
         .foregroundColor: NSColor.white,
         .paragraphStyle: para,
         .kern: -2.0,
     ]))
     text.append(NSAttributedString(string: shot.line2, attributes: [
-        .font: roundedFont(104, .black),
+        .font: font,
         .foregroundColor: orange,
         .paragraphStyle: para,
         .kern: -2.0,
