@@ -59,7 +59,16 @@
       "Bash(mkdir __TRACKED_VAR__/pw2)",
       "Bash(xcrun xcresulttool *)",
       "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -only-testing:VolumeUITests/VolumeUITests/testPaywallShowsRealStoreKitPrices test)",
-      "Bash(git commit -q -m 'Wait for StoreKit prices in the paywall UI test *)"
+      "Bash(git commit -q -m 'Wait for StoreKit prices in the paywall UI test *)",
+      "Bash(cd \"/Users/dilfateh/Desktop/claude code/gym log app\")",
+      "Bash(rm -f AppStore/screenshots-6.9/*.png)",
+      "Bash(pwd)",
+      "Bash(swift __TRACKED_VAR__/makeshots.swift __CMDSUB_OUTPUT__/AppStore/raw-captures __CMDSUB_OUTPUT__/AppStore/screenshots-6.9)",
+      "Bash(rm -rf /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/dark.xcresult)",
+      "Bash(xcodebuild -project Volume.xcodeproj -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' -derivedDataPath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/DD26 -resultBundlePath /private/tmp/claude-501/-Users-dilfateh-Desktop-claude-code-gym-log-app/f4068788-a1da-4991-abdf-c3b0f40026b9/scratchpad/dark.xcresult -only-testing:VolumeUITests/VolumeUITests/testEveryTabRenders -only-testing:VolumeUITests/VolumeUITests/testBeatingTheScoreCelebratesAndSummarises test)",
+      "Bash(mkdir -p __TRACKED_VAR__/darkout)",
+      "Bash(rm -f __TRACKED_VAR__/darkout/*.png)",
+      "Bash(swift __TRACKED_VAR__/makeshots.swift __CMDSUB_OUTPUT__/AppStore/raw-captures-dark __TRACKED_VAR__/darkout)"
     ]
   }
 }

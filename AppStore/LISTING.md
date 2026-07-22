@@ -197,23 +197,35 @@ fails the test suite rather than shipping a paywall with nothing to sell.
 `AppStore/screenshots-6.9/` — six at **1320 × 2868**, the required 6.9" size, captured from
 the real app with real data by the UI test suite.
 
-| Order | File | Shows |
+| Order | File | Headline |
 |---|---|---|
-| 1 | `1-home.png` | Start Workout, streak, weekly goal |
-| 2 | `2-new-record.png` | The celebration |
-| 3 | `3-summary.png` | Post-workout summary with the delta |
-| 4 | `4-records.png` | Records tab, PRs per workout |
-| 5 | `5-calendar.png` | Month view |
-| 6 | `6-active-workout.png` | Logging a set |
+| 1 | `1-home.png` | Your whole workout, **one number** |
+| 2 | `2-active-workout.png` | Log a set **in two taps** |
+| 3 | `3-new-record.png` | Beat it, and **you'll know** |
+| 4 | `4-summary.png` | See how much **you beat it by** |
+| 5 | `5-records.png` | Every record **you've ever set** |
+| 6 | `6-calendar.png` | Every session, **all in one place** |
+
+Marketing composites: headline over the real device capture on a near-black background,
+app in dark mode so the orange reads as the accent it is. Raw captures are kept in
+`raw-captures/`. **Upload in numbered order** — only the first three show on the install
+sheet and in search results.
 
 Regenerate any time with:
 
 ```bash
+# 1. capture (dark mode, so the composites match)
+xcrun simctl ui "iPhone 17 Pro Max" appearance dark
 xcodebuild test -scheme Volume -only-testing:VolumeUITests \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
   -resultBundlePath shots.xcresult
-xcrun xcresulttool export attachments --path shots.xcresult --output-path out
+xcrun xcresulttool export attachments --path shots.xcresult --output-path raw
+
+# 2. composite headlines onto them
+swift AppStore/make-screenshots.swift AppStore/raw-captures AppStore/screenshots-6.9
 ```
+
+Headlines live at the top of `AppStore/make-screenshots.swift` — edit the `shots` array.
 
 6.9" is the only size Apple now requires; it scales the rest.
 
