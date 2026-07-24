@@ -162,6 +162,18 @@ final class SubscriptionManager {
         errorMessage = nil
         defer { isWorking = false }
 
+        // StoreKit 2 keeps `currentEntitlements` current on its own, so check locally
+        // before reaching for the network. Someone who is already entitled — including a
+        // reviewer who just subscribed — gets an instant restore with no password prompt,
+        // which is the overwhelmingly common case for a button people tap when unsure.
+        await refreshEntitlements()
+        if status == .subscribed { return }
+
+        // Only now is a sync worth its cost. `AppStore.sync()` deliberately forces a fresh
+        // App Store authentication, which is why it prompts for a password, and in the
+        // sandbox it asks for production credentials it can't validate and fails with
+        // "Unable to Complete Request". Reserve it for the case it actually solves:
+        // entitlements this device has genuinely never seen.
         do {
             try await AppStore.sync()
             await refreshEntitlements()
@@ -169,7 +181,11 @@ final class SubscriptionManager {
                 errorMessage = "No active subscription found on this Apple Account."
             }
         } catch {
-            errorMessage = error.localizedDescription
+            // A cancelled password prompt is a decision, not a failure — saying nothing is
+            // right, and an error under the button would read as though something broke.
+            if let storeKitError = error as? StoreKitError,
+               case .userCancelled = storeKitError { return }
+            errorMessage = "Couldn't reach the App Store. Check your connection and try again."
         }
     }
 
