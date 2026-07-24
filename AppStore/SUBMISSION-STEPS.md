@@ -273,9 +273,15 @@ nothing goes public until you press the button.
 ### CloudKit production schema — DONE 23 July 2026
 
 All six record types (`CD_Exercise`, `CD_WorkoutTemplate`, `CD_WorkoutSession`,
-`CD_ExerciseEntry`, `CD_SetEntry`, `CD_WeeklyGoal`) were present in Development and have
-been deployed to **Production**. This was the one item that fails silently — sync would have
-been broken for every real user while working perfectly on the owner's own phone.
+`CD_ExerciseEntry`, `CD_SetEntry`, `CD_WeeklyGoal`) were present in Development, have been
+deployed to **Production**, and were **verified listed in the Production environment**. This
+was the one item that fails silently — sync would have been broken for every real user while
+working perfectly on the owner's own phone.
+
+> If the Production Record Types list ever reads "No record types found" alongside an
+> **"Error performing DAW auth"** banner, that's the dashboard's own session failing, not an
+> empty schema. Reload in a private window and it comes back. Don't re-deploy on the
+> strength of that screen.
 
 Two things worth knowing next time you touch the model:
 
