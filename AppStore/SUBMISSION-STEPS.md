@@ -270,6 +270,35 @@ nothing goes public until you press the button.
 - **App Privacy has a separate Publish button.** Answering the questions isn't enough; the
   requirement stays unmet until it's published.
 
+### StoreKit testing: two different accounts, and why the paywall "vanished"
+
+23 July: the TestFlight build walked straight past the paywall. It was not a bug. A
+TestFlight build and an Xcode-signed build ask **different Apple Accounts** for entitlements:
+
+| Build | Entitlements come from |
+|---|---|
+| Xcode-signed / `devicectl` install | the **Sandbox Apple Account** under Settings ▸ Developer |
+| TestFlight | your real **App Store account**, in a free sandbox context |
+
+So a free trial started on TestFlight is invisible under Settings ▸ Developer ▸ Sandbox
+Apple Account, and survives deleting and reinstalling the app, because the entitlement is
+server-side. Check Apple's own sheet via Settings ▸ Manage subscription inside the app
+instead.
+
+Proven along the way, by installing a Debug build with temporary `print` diagnostics in
+`refreshEntitlements()` and reading it back with
+`xcrun devicectl device process launch --console`:
+
+- The gate is fail-closed. With no entitlement, status resolves to `.never` and `RootView`
+  shows the paywall. A failed product load never unlocks anything.
+- **Both products vend from App Store Connect** — `com.volume.pro.monthly` and
+  `com.volume.pro.annual` loaded with `productLoadFailed=false` outside Xcode, so no local
+  `.storekit` file was involved. The Paid Apps agreement is active and the subscriptions are
+  configured correctly.
+
+> `devicectl --console` forwards stdout/stderr only. `Logger`/`os_log` output never reaches
+> it — use `print` for throwaway device diagnostics, or Console.app for the real log.
+
 ### CloudKit production schema — DONE 23 July 2026
 
 All six record types (`CD_Exercise`, `CD_WorkoutTemplate`, `CD_WorkoutSession`,
