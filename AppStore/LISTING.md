@@ -193,6 +193,25 @@ Create one **subscription group** — suggested reference name `Volume Pro`.
 Each needs a localized **display name** and **description**, plus a review screenshot (any
 paywall screenshot works — `AppStore/screenshots-6.9/` has them).
 
+### Regional pricing — not drift
+
+The table above is the **US** storefront. Canada is deliberately lower:
+
+| Storefront | Monthly | Annual | Annual saves |
+|---|---|---|---|
+| US | $4.99 | $49.99 | 17% |
+| Canada | $2.99 | $29.99 | 16% |
+
+Seeing CA$2.99 in Apple's subscription sheet while every document here says US$4.99 looks
+like the two have drifted apart. They haven't. Keep the ratio roughly proportionate in any
+storefront you set by hand: the paywall's savings badge only renders when annual actually
+beats twelve months of monthly (`PaywallView.savingsBadge`), and `SubscriptionManager` sorts
+annual first as the default selection on the assumption it's the better deal. Lower monthly
+alone and Canadian users would get the worse plan pre-selected with no badge to explain it.
+
+`SubscriptionTests` cannot catch this. It asserts against `Products.storekit`, which holds a
+single US price and has no concept of storefronts.
+
 These must match `Products.storekit` and `SubscriptionManager.monthlyID/annualID` exactly.
 `VolumeTests/SubscriptionTests.swift` asserts the IDs, prices and trial length, so drift
 fails the test suite rather than shipping a paywall with nothing to sell.
