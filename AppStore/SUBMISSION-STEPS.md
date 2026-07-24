@@ -209,6 +209,24 @@ Typical review: 24–48 hours.
 Round 2. The description now carries the EULA link; the build is the same 1.0 (2). All four
 items back in review.
 
+### ⚠️ `main` is ahead of the build under review
+
+Commit `7b85435` fixes **Restore purchases** and is **not in 1.0 (2)**. Whatever goes up
+next — a rejection resubmission or 1.0.1 — must be built from `main` so it carries this.
+
+Tapping Restore while already subscribed forced an `AppStore.sync()`, which prompts for an
+App Store password and, in the sandbox, asks for production credentials it can't validate:
+"Unable to Complete Request". The fix checks `currentEntitlements` first and returns
+immediately when entitled, so the common case needs no prompt at all.
+
+Deliberately not uploaded on 23 July: adding a build sends the version back to *Waiting for
+Review*, a certain 24–48 hour reset, and the old code is the textbook StoreKit 2 restore
+that Apple's own sample uses. In production it works — it just asks for a password it didn't
+need. An annoyance, not a broken feature.
+
+Also queued for 1.0.1: Restore gives no positive confirmation on success, it just stays
+*Active* silently.
+
 ### Round 1: rejected 23 July 2026 — metadata only
 
 Submitted 22 July (iOS App 1.0 (2), both subscriptions, the **Volume Pro group**). Rejected
