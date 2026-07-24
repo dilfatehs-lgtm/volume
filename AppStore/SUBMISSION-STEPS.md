@@ -204,14 +204,59 @@ Two things worth doing once, easy to forget:
 
 ---
 
-## STATUS: submitted 22 July 2026
+## STATUS: rejected 23 July 2026 — metadata only, fix and resubmit
 
-4 items in review: **iOS App 1.0 (2)**, both subscriptions, and the **Volume Pro group**.
-Review takes up to 48 hours; an email arrives when it completes. Release is set to
-**manual**, so approval lands at *Pending Developer Release* and nothing goes public until
-you press the button.
+Submitted 22 July (iOS App 1.0 (2), both subscriptions, the **Volume Pro group**). Rejected
+the next day by an automated check:
 
-### Two gotchas hit during submission, for next time
+> The submission offers auto-renewable subscriptions but does not include a functional link
+> to the Terms of Use (EULA) in the app's metadata.
+
+The three subscription items show **Rejected** only as collateral — nothing is wrong with
+them. They come back for review automatically when the app is resubmitted.
+
+### Why it happened
+
+Guideline 3.1.2 wants the Terms of Use in **two** places, and we only did one:
+
+| Where | State at submission |
+|---|---|
+| In the binary | ✅ Paywall links to `terms.html`, which carries every subscription disclosure |
+| In the store metadata | ❌ Nothing |
+
+App Information ▸ License Agreement is Apple's **Standard EULA**, so Apple's checker looks
+for *that* EULA's URL in the App Description and found none. Having our own terms hosted and
+linked inside the app does not satisfy it.
+
+### The fix — no new build, no re-upload
+
+The build is untouched; this is a text field. Description edits do not require a new binary.
+
+1. App Store Connect ▸ your app ▸ the **1.0** version page ▸ **Description**
+2. Replace it with the description in [LISTING.md](LISTING.md) — the only change is the
+   `SUBSCRIPTION` paragraph plus these two lines at the end:
+
+   ```
+   Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+   Privacy Policy: https://dilfatehs-lgtm.github.io/volume/privacy.html
+   ```
+
+3. **Save**
+4. **Add for Review** ▸ confirm all four items are attached again (app, both subscriptions,
+   the Volume Pro group) ▸ **Submit**
+
+Leave License Agreement on Standard EULA. The alternative — pasting a custom EULA into App
+Store Connect — also satisfies the guideline, but it's read by a person rather than a
+checker, so it's the slower and riskier of the two paths.
+
+Release is still set to **manual**, so approval lands at *Pending Developer Release* and
+nothing goes public until you press the button.
+
+### Three gotchas hit during submission, for next time
+
+- **A link inside the app is not a link in the metadata.** Guideline 3.1.2 wants the Terms
+  of Use in both places, and the store-side one is checked automatically. This is what cost
+  the first round.
 
 - **The subscription *group* is its own submittable item** and needs its own Localization
   (a Subscription Group Display Name). Without it, submission fails with "your
@@ -226,11 +271,11 @@ you press the button.
 over. Without this, iCloud sync fails silently for every real user while continuing to work
 perfectly on your own phone — the failure mode is invisible to you.
 
-### If it's rejected
+### If it's rejected again
 
-Send the exact rejection text. The usual causes for subscription apps are already covered:
-legal links live and verified, restore button on the paywall, prices and trial terms shown
-before purchase, subscription details in terms.html, privacy manifest in the binary.
+Send the exact rejection text. Covered already: legal links live and verified, EULA link in
+the description, restore button on the paywall, prices and trial terms shown before
+purchase, subscription details in terms.html, privacy manifest in the binary.
 
 ### Known-good state at submission
 

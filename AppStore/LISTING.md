@@ -72,9 +72,20 @@ doesn't tell you what to do — it keeps the log and shows you the number.
 
 SUBSCRIPTION
 
-Volume is US$4.99/month or US$49.99/year, with a 7-day free trial. Your data is never deleted if
-you stop subscribing.
+Volume is US$4.99/month or US$49.99/year, with a 7-day free trial. Payment is charged to your
+Apple Account at confirmation of purchase. Subscriptions renew automatically unless cancelled
+at least 24 hours before the end of the current period; manage or cancel in your device
+Settings. Your data is never deleted if you stop subscribing.
+
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://dilfatehs-lgtm.github.io/volume/privacy.html
 ```
+
+> **Do not remove the last two lines.** The 22 July submission was rejected for exactly
+> this: an auto-renewable subscription with no Terms of Use link in the metadata. Because
+> App Information ▸ License Agreement is Apple's **Standard EULA**, Apple's automated check
+> requires that EULA's URL in the App Description. The in-app link to our own `terms.html`
+> satisfies the *binary* half of guideline 3.1.2, not the metadata half.
 
 ## Every remaining field, answered
 
