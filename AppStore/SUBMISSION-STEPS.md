@@ -204,7 +204,12 @@ Two things worth doing once, easy to forget:
 
 ---
 
-## STATUS: rejected 23 July 2026 — metadata only, fix and resubmit
+## STATUS: resubmitted 23 July 2026, in review
+
+Round 2. The description now carries the EULA link; the build is the same 1.0 (2). All four
+items back in review.
+
+### Round 1: rejected 23 July 2026 — metadata only
 
 Submitted 22 July (iOS App 1.0 (2), both subscriptions, the **Volume Pro group**). Rejected
 the next day by an automated check:
@@ -228,9 +233,9 @@ App Information ▸ License Agreement is Apple's **Standard EULA**, so Apple's c
 for *that* EULA's URL in the App Description and found none. Having our own terms hosted and
 linked inside the app does not satisfy it.
 
-### The fix — no new build, no re-upload
+### The fix that was applied — no new build, no re-upload
 
-The build is untouched; this is a text field. Description edits do not require a new binary.
+The build was untouched; this is a text field. Description edits do not require a new binary.
 
 1. App Store Connect ▸ your app ▸ the **1.0** version page ▸ **Description**
 2. Replace it with the description in [LISTING.md](LISTING.md) — the only change is the
