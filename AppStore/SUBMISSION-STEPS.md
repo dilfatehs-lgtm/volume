@@ -195,12 +195,12 @@ Typical review: 24–48 hours.
 
 ## After it's live
 
-Two things worth doing once, easy to forget:
-
-1. **CloudKit Console ▸ Schema ▸ Deploy to Production.** Sync silently fails for real users
-   until you do this — the development schema doesn't carry over.
+1. ~~CloudKit Console ▸ Schema ▸ Deploy to Production.~~ **Done 23 July 2026**, before
+   approval — see the status block above.
 2. Change `aps-environment` in `Volume/Volume.entitlements` from `development` to
-   `production` if push-driven sync misbehaves in the live build.
+   `production` if push-driven sync misbehaves in the live build. Not urgent: this only
+   drives *how promptly* devices learn about each other's changes. With it wrong, records
+   still sync on launch and on foreground, just less eagerly — degraded, not broken.
 
 ---
 
@@ -270,11 +270,21 @@ nothing goes public until you press the button.
 - **App Privacy has a separate Publish button.** Answering the questions isn't enough; the
   requirement stays unmet until it's published.
 
-### Do this the moment it's approved, before releasing
+### CloudKit production schema — DONE 23 July 2026
 
-**CloudKit Console ▸ Schema ▸ Deploy to Production.** The development schema does not carry
-over. Without this, iCloud sync fails silently for every real user while continuing to work
-perfectly on your own phone — the failure mode is invisible to you.
+All six record types (`CD_Exercise`, `CD_WorkoutTemplate`, `CD_WorkoutSession`,
+`CD_ExerciseEntry`, `CD_SetEntry`, `CD_WeeklyGoal`) were present in Development and have
+been deployed to **Production**. This was the one item that fails silently — sync would have
+been broken for every real user while working perfectly on the owner's own phone.
+
+Two things worth knowing next time you touch the model:
+
+- **TestFlight and App Store builds use the Production CloudKit environment.** Only
+  Xcode-signed development builds use Development. So a schema change tested on your own
+  phone is *not* live for testers until it's deployed again.
+- **Production schema changes are additive and one-way.** You can add record types and
+  fields; you cannot remove or rename them. Adding a property to a `@Model` means another
+  deploy.
 
 ### If it's rejected again
 
