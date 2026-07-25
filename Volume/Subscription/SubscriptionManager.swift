@@ -38,9 +38,14 @@ final class SubscriptionManager {
 
     private(set) var products: [Product] = []
     private(set) var status: Status = .loading
-    private(set) var isWorking = false
+    private(set) var isPurchasing = false
+    private(set) var isRestoring = false
     private(set) var productLoadFailed = false
     var errorMessage: String?
+
+    /// Either flow in flight. Purchase and restore stay mutually exclusive, but each
+    /// shows its own spinner — a restore must not make Subscribe look like it's buying.
+    var isWorking: Bool { isPurchasing || isRestoring }
 
     private var updatesTask: Task<Void, Never>?
 
@@ -67,6 +72,21 @@ final class SubscriptionManager {
 
     func refresh() async {
         await loadProducts()
+        await refreshEntitlements()
+    }
+
+    /// Retry hook for the paywall and resubscribe screens: free once the catalog is
+    /// loaded, a second chance when a launch-time load came back empty.
+    func ensureProductsLoaded() async {
+        guard products.isEmpty else { return }
+        await loadProducts()
+    }
+
+    /// Called when the scene becomes active. Entitlements are always re-checked (a
+    /// subscription can expire while the app is backgrounded); products only when a
+    /// previous load returned nothing.
+    func refreshOnForeground() async {
+        if products.isEmpty { await loadProducts() }
         await refreshEntitlements()
     }
 
@@ -129,9 +149,9 @@ final class SubscriptionManager {
 
     func purchase(_ product: Product) async {
         guard !isWorking else { return }
-        isWorking = true
+        isPurchasing = true
         errorMessage = nil
-        defer { isWorking = false }
+        defer { isPurchasing = false }
 
         do {
             switch try await product.purchase() {
@@ -158,9 +178,9 @@ final class SubscriptionManager {
 
     func restore() async {
         guard !isWorking else { return }
-        isWorking = true
+        isRestoring = true
         errorMessage = nil
-        defer { isWorking = false }
+        defer { isRestoring = false }
 
         // StoreKit 2 keeps `currentEntitlements` current on its own, so check locally
         // before reaching for the network. Someone who is already entitled — including a
@@ -190,8 +210,16 @@ final class SubscriptionManager {
     }
 
     private func handle(_ result: VerificationResult<Transaction>) async {
-        guard case .verified(let transaction) = result else { return }
-        await transaction.finish()
-        await refreshEntitlements()
+        switch result {
+        case .verified(let transaction):
+            await transaction.finish()
+            await refreshEntitlements()
+        case .unverified(_, let error):
+            // Deliberately not finished: finishing is permanent, verification failures
+            // can be transient (clock skew, certificate refresh), and an unfinished
+            // transaction is redelivered — which is the retry we want. Never grant
+            // access from a payload that didn't verify.
+            Self.log.warning("Unverified transaction update: \(error.localizedDescription, privacy: .public)")
+        }
     }
 }

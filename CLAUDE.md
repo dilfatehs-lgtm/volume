@@ -11,11 +11,11 @@ still has to do. This file covers what you need to change the code safely.
 ```bash
 # Build
 xcodebuild -project Volume.xcodeproj -scheme Volume \
-  -destination 'platform=iOS Simulator,name=iPhone 16' build
+  -destination 'platform=iOS Simulator,name=iPhone 17' build
 
-# All tests (66 unit + 7 UI)
+# All tests (79 unit + 7 UI; the 10 SubscriptionTests self-skip under CLI, see below)
 xcodebuild -project Volume.xcodeproj -scheme Volume \
-  -destination 'platform=iOS Simulator,name=iPhone 16' test
+  -destination 'platform=iOS Simulator,name=iPhone 17' test
 
 # One target, one class, or one test
 -only-testing:VolumeTests
@@ -23,8 +23,8 @@ xcodebuild -project Volume.xcodeproj -scheme Volume \
 -only-testing:VolumeTests/RecordStreakTests/testFallingShortResetsTheStreak
 
 # Run in the simulator (see DEBUG launch arguments below)
-xcrun simctl install "iPhone 16" <DerivedData>/Build/Products/Debug-iphonesimulator/Volume.app
-xcrun simctl launch "iPhone 16" com.hibeamgroup.volume -VolumeResetData -VolumeSampleData -VolumeSkipOnboarding -VolumeUnlock
+xcrun simctl install "iPhone 17" <DerivedData>/Build/Products/Debug-iphonesimulator/Volume.app
+xcrun simctl launch "iPhone 17" com.hibeamgroup.volume -VolumeResetData -VolumeSampleData -VolumeSkipOnboarding -VolumeUnlock
 ```
 
 UI-test screenshots are `XCTAttachment`s; extract with
@@ -97,7 +97,10 @@ Tests pin all of these. If one fails after your change, the change is wrong, not
   from build phases via `membershipExceptions` in the pbxproj — keep them there.
 - **StoreKit tests use `SKTestSession`**, not the scheme's `StoreKitConfigurationFileReference`
   (which applies to Run but not `xcodebuild test`). `Products.storekit` is at the repo root
-  and bundled into the unit-test target.
+  and bundled into the unit-test target. **On iOS 26.x simulator runtimes SKTestSession is
+  broken under CLI `xcodebuild test`** (SKInternalErrorDomain Code=3; the config never
+  reaches storekitd — Apple bug, see flutter/flutter#184678), so `SubscriptionTests`
+  self-skips. Don't "fix" the .storekit file; it's fine.
 - UI tests: several views are single combined accessibility elements for VoiceOver, so
   `staticTexts["Some Title"]` won't match. Use the label-prefix helpers in the test file.
   `waitForExistence` does not imply hittable — scroll explicitly.

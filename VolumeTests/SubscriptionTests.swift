@@ -36,22 +36,25 @@ final class SubscriptionTests: XCTestCase {
         session.clearTransactions()
         session.disableDialogs = true
 
-        // `Products.storekit` was hand-authored for Xcode 16. Under the iOS 26 SDK the file
-        // still parses — `SKTestSession` init doesn't throw — but StoreKit registers no
-        // products from it, so every assertion below would fail for a reason that has
-        // nothing to do with the app's code.
+        // Known Apple bug in the iOS 26.x simulator runtimes, NOT a problem with
+        // Products.storekit: under command-line `xcodebuild test`, every SKTestSession
+        // mutation fails with SKInternalErrorDomain Code=3 ("Error saving configuration
+        // file" in the simulator log) because the session's configuration never reaches
+        // storekitd. Re-saving or regenerating the .storekit file does not help — that
+        // was this comment's previous, incorrect diagnosis. Tracked publicly in
+        // flutter/flutter#184678; no fixed runtime version named as of July 2026.
         //
         // Skipping rather than deleting: these tests are the only thing that catches a
         // product ID in `SubscriptionManager` drifting from the store configuration, and
-        // they start running again by themselves once the file loads. To fix, open
-        // Products.storekit in Xcode 26 and let it migrate the format, or recreate it via
-        // File ▸ New ▸ File ▸ StoreKit Configuration File with the same two products.
+        // they start running again by themselves on a fixed runtime (running from the
+        // Xcode IDE may also work, since the IDE pushes the configuration itself).
         //
         // This does not affect device builds, which query the real App Store.
         if try await Product.products(for: SubscriptionManager.productIDs).isEmpty {
             throw XCTSkip("""
-                Products.storekit registers no products under the iOS 26 SDK. \
-                Re-save the file in Xcode 26 to re-enable these tests.
+                SKTestSession can't reach storekitd on this simulator runtime (known \
+                iOS 26.x bug, SKInternalErrorDomain Code=3). These tests self-heal on a \
+                fixed runtime; nothing in the app or Products.storekit is wrong.
                 """)
         }
     }
@@ -128,5 +131,88 @@ final class SubscriptionTests: XCTestCase {
         XCTAssertNotEqual(manager.status, .loading, "Entitlement check should resolve")
         XCTAssertNotEqual(manager.status, .expired,
                           "A user who never subscribed must not see the resubscribe screen")
+    }
+
+    // MARK: - Purchase lifecycle
+    //
+    // App Review's 2.1(b) rejection was this exact journey: subscribe, let the sandbox
+    // clock expire it, land on the resubscribe screen, tap Subscribe, nothing happens.
+    // These pin every step of that path at the manager level.
+
+    func testPurchaseUnlocksTheApp() async throws {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+
+        _ = try await session.buyProduct(identifier: SubscriptionManager.annualID)
+        await manager.refreshEntitlements()
+
+        XCTAssertEqual(manager.status, .subscribed)
+    }
+
+    func testExpiryLocksAndRepurchaseUnlocks() async throws {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+
+        _ = try await session.buyProduct(identifier: SubscriptionManager.monthlyID)
+        await manager.refreshEntitlements()
+        XCTAssertEqual(manager.status, .subscribed)
+
+        try session.expireSubscription(productIdentifier: SubscriptionManager.monthlyID)
+        await manager.refreshEntitlements()
+        XCTAssertEqual(manager.status, .expired,
+                       "History exists, so this must be the resubscribe screen, not the paywall")
+
+        _ = try await session.buyProduct(identifier: SubscriptionManager.annualID)
+        await manager.refreshEntitlements()
+        XCTAssertEqual(manager.status, .subscribed, "Resubscribing must unlock again")
+    }
+
+    /// The scene-active hook must notice a subscription that expired while the app was
+    /// backgrounded, and leave the catalog loaded so the resubscribe screen can sell.
+    func testForegroundRefreshPicksUpAnExpiredSubscription() async throws {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+
+        _ = try await session.buyProduct(identifier: SubscriptionManager.annualID)
+        await manager.refreshEntitlements()
+        XCTAssertEqual(manager.status, .subscribed)
+
+        try session.expireSubscription(productIdentifier: SubscriptionManager.annualID)
+        await manager.refreshOnForeground()
+
+        XCTAssertEqual(manager.status, .expired)
+        XCTAssertEqual(manager.products.count, 2,
+                       "The resubscribe screen needs products to sell")
+    }
+
+    /// One failed catalog load must not leave a permanently empty paywall — the retry
+    /// hook both screens call on appear has to recover once the store is reachable.
+    func testEnsureProductsLoadedRecoversFromAFailedLoad() async throws {
+        try await session.setSimulatedError(
+            .generic(.networkError(URLError(.notConnectedToInternet))),
+            forAPI: .loadProducts
+        )
+
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+        XCTAssertTrue(manager.products.isEmpty)
+        XCTAssertTrue(manager.productLoadFailed)
+
+        try await session.setSimulatedError(nil, forAPI: .loadProducts)
+        await manager.ensureProductsLoaded()
+
+        XCTAssertEqual(manager.products.count, 2)
+        XCTAssertFalse(manager.productLoadFailed)
+    }
+
+    func testEnsureProductsLoadedIsANoOpOnceLoaded() async {
+        let manager = SubscriptionManager()
+        await manager.loadProducts()
+        let loadedIDs = manager.products.map(\.id)
+        XCTAssertFalse(loadedIDs.isEmpty)
+
+        await manager.ensureProductsLoaded()
+        XCTAssertEqual(manager.products.map(\.id), loadedIDs,
+                       "A loaded catalog must pass through untouched")
     }
 }

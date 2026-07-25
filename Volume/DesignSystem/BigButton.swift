@@ -14,6 +14,11 @@ struct BigButtonStyle: ButtonStyle {
     var size: CGFloat = 20
     var fullWidth = true
 
+    // Custom ButtonStyles get no automatic disabled treatment. Without this a disabled
+    // button renders identically to a live one and taps die in silence — App Review
+    // reported the paywall's Subscribe button as "unresponsive" for exactly that reason.
+    @Environment(\.isEnabled) private var isEnabled
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(Theme.label(size, weight: .heavy))
@@ -26,6 +31,7 @@ struct BigButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: Theme.buttonRadius, style: .continuous)
                     .strokeBorder(kind == .secondary ? Theme.hairline : .clear, lineWidth: 1)
             )
+            .opacity(isEnabled ? 1 : 0.45)
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
     }

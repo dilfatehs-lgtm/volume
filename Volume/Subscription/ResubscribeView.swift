@@ -61,8 +61,17 @@ struct ResubscribeView: View {
                 .padding(.bottom, 12)
             }
             .safeAreaInset(edge: .bottom) {
+                // trialAvailable is hardcoded off: a lapsed subscriber has used their
+                // introductory offer, so promising a trial here would be a lie.
                 PurchaseFooter(selectedID: selectedID, trialAvailable: false)
             }
+        }
+        .task {
+            // This screen can appear long after launch (a subscription expiring
+            // mid-session) or in a process whose only catalog load failed. Without a
+            // retry here the Subscribe button has nothing to sell — the App Review
+            // "unresponsive button" rejection.
+            await subscriptions.ensureProductsLoaded()
         }
     }
 }

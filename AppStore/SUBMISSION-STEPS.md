@@ -163,7 +163,9 @@ Now test the whole money path, which **has never run for real** — every previo
 local StoreKit file:
 
 - [ ] Paywall shows **$4.99** and **$49.99** from App Store Connect, not the local file
-- [ ] "Try free for 7 days" starts the trial and unlocks the app
+- [ ] "Subscribe" starts the 7-day trial when eligible and unlocks the app (the trial is
+      named in the fineprint under the button, after the price — never on the button;
+      that wording is a 3.1.2(c) rejection, see round 3)
 - [ ] Force-quit and relaunch — still unlocked, no paywall flash
 - [ ] **Restore purchases** works from a fresh install
 - [ ] Settings ▸ Manage subscription opens Apple's sheet without oddities
@@ -204,10 +206,70 @@ Typical review: 24–48 hours.
 
 ---
 
-## STATUS: resubmitted 23 July 2026, in review
+## STATUS: rejected 25 July 2026 — round 3, needs a new binary
 
-Round 2. The description now carries the EULA link; the build is the same 1.0 (2). All four
-items back in review.
+Round 2 was reviewed on device (iPhone 17 Pro Max, iOS 26.5.2, and an iPad Air 11") and
+rejected for two reasons. All four items returned as collateral again.
+
+**3.1.2(c) — the trial was promoted more conspicuously than the price.** The CTA said
+"Try free for 7 days" at button weight while the billed amount only appeared in secondary
+plan-row text and the footnote. Apple requires the billed amount to be the most clear and
+conspicuous pricing element, with trial/intro copy subordinate in position and size.
+
+**2.1(b) — the resubscribe screen's Subscribe button was unresponsive.** Their sandbox
+subscription expired on the accelerated clock (expected), the "Your subscription ended"
+screen appeared (correct), and tapping Subscribe did nothing. Root cause was a stack of
+silent failure modes: `BigButtonStyle` ignored `isEnabled` so a disabled button looked
+live; the product catalog loaded once per process with no retry, so one bad load left
+nothing to sell; no foreground refresh existed; and the guards in the purchase path
+swallowed taps without feedback.
+
+### The fix (in `main`, ships as 1.0 (3))
+
+- Plan rows lead with the price at heavy weight; the plan name is the secondary line.
+  The CTA is always **"Subscribe"**; the fineprint leads with the billed amount:
+  "$49.99 USD a year after a 7-day free trial. Cancel any time."
+- Disabled `BigButtonStyle` buttons now dim (opacity 0.45).
+- The paywall and resubscribe screens retry a failed catalog load on appear
+  (`ensureProductsLoaded`), and the app re-checks entitlements + products every time it
+  returns to the foreground (`refreshOnForeground` via `scenePhase`).
+- `purchase()`/`restore()` got separate in-flight flags, so a restore no longer makes
+  Subscribe look busy; Restore disables during either flow.
+- Unverified transaction updates are logged, deliberately not finished (finishing is
+  permanent; redelivery is the retry we want).
+- Regression tests: five SKTestSession tests covering purchase → expiry → repurchase,
+  the foreground refresh, and catalog-load recovery; the paywall UI test now asserts the
+  CTA is "Subscribe", the trial button is gone, and the fineprint leads with the price.
+
+**Known non-fix:** right after a purchase, StoreKit's own "You're all set" alert can
+briefly overlap the app swapping to the unlocked UI (their screenshot showed a spinner
+under the system alert). That's standard StoreKit 2 timing — `Transaction.updates` lands
+before `purchase()` returns — cosmetic, and not the failure they reproduced. Don't chase it.
+
+**1.0 (3) must be built from `main`** — it also finally ships the `7b85435` restore fix
+noted below, which round 2 deliberately left out.
+
+### Resubmission
+
+1. Bump build to **1.0 (3)**, archive Release from `main`, upload, wait for processing.
+2. Version page ▸ select build 1.0 (3) ▸ **Add for Review** with all four items attached
+   (app, both subscriptions, the Volume Pro group) ▸ Submit.
+3. Reply in the Resolution Center (draft — attach a current paywall screenshot):
+
+   > Both issues are addressed in build 1.0 (3). For 3.1.2(c): the billed amount is now
+   > the most prominent pricing element — it leads each plan row in the heaviest type on
+   > the card, the purchase button reads "Subscribe", and the disclosure beneath it leads
+   > with the price ("$49.99 USD a year after a 7-day free trial. Cancel any time.").
+   > For 2.1(b): the app now reloads the product catalog whenever the paywall or
+   > resubscribe screen appears and re-checks entitlements on every return to the
+   > foreground, and the purchase button visibly disables when there is nothing to buy.
+   > We reproduced the expired-sandbox-subscription flow and verified Subscribe now
+   > completes a repurchase.
+
+### Round 2: resubmitted 23 July 2026 — rejected 25 July
+
+The description now carries the EULA link; the build is the same 1.0 (2). All four
+items went back in review.
 
 ### ⚠️ `main` is ahead of the build under review
 

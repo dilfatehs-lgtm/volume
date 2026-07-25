@@ -32,6 +32,11 @@ struct PaywallView: View {
             }
         }
         .task {
+            // Retry a failed catalog load every time the paywall appears — without this,
+            // one bad launch leaves a permanently empty paywall (App Review hit exactly
+            // that on the resubscribe screen). Must run before the eligibility check,
+            // which needs a loaded product.
+            await subscriptions.ensureProductsLoaded()
             if let annual = subscriptions.annual {
                 trialAvailable = await subscriptions.isEligibleForTrial(annual)
             }
@@ -115,10 +120,13 @@ struct PlanPicker: View {
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundStyle(isSelected ? Theme.accent : .secondary)
 
+                // Price above name, at the weight the name used to have: guideline
+                // 3.1.2(c) requires the billed amount to be the most conspicuous
+                // pricing element on the screen.
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(product.id == SubscriptionManager.annualID ? "Yearly" : "Monthly")
+                    Text(priceLine(product))
                         .font(Theme.label(19, weight: .heavy))
-                    Text(priceCaption(product))
+                    Text(product.id == SubscriptionManager.annualID ? "Yearly" : "Monthly")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -151,7 +159,7 @@ struct PlanPicker: View {
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 
-    private func priceCaption(_ product: Product) -> String {
+    private func priceLine(_ product: Product) -> String {
         if product.id == SubscriptionManager.annualID {
             return "\(product.displayPriceWithCurrency) a year"
         }
@@ -210,10 +218,12 @@ struct PurchaseFooter: View {
                 guard let product else { return }
                 Task { await subscriptions.purchase(product) }
             } label: {
-                if subscriptions.isWorking {
+                if subscriptions.isPurchasing {
                     ProgressView().tint(.white)
                 } else {
-                    Text(trialAvailable ? "Try free for 7 days" : "Subscribe")
+                    // Never "Try free for 7 days": the CTA leading with the trial is what
+                    // guideline 3.1.2(c) rejects. The trial lives in the fineprint below.
+                    Text("Subscribe")
                 }
             }
             .buttonStyle(.big)
@@ -236,6 +246,7 @@ struct PurchaseFooter: View {
                 Button("Restore") {
                     Task { await subscriptions.restore() }
                 }
+                .disabled(subscriptions.isWorking)
                 Link("Terms", destination: LegalLinks.terms)
                 Link("Privacy", destination: LegalLinks.privacy)
             }
@@ -258,13 +269,16 @@ struct PurchaseFooter: View {
         .background(.bar)
     }
 
+    /// The billed amount leads the sentence and the trial is a subordinate clause —
+    /// the order is part of the 3.1.2(c) fix, not a style choice.
     private var fineprint: String {
         guard let product else { return "Subscription renews automatically. Cancel any time." }
         let period = product.id == SubscriptionManager.annualID ? " a year" : " a month"
+        let price = "\(product.displayPriceWithCurrency)\(period)"
         if trialAvailable {
-            return "7 days free, then \(product.displayPriceWithCurrency)\(period). Cancel any time."
+            return "\(price) after a 7-day free trial. Cancel any time."
         }
-        return "\(product.displayPriceWithCurrency)\(period). Cancel any time."
+        return "\(price). Cancel any time."
     }
 }
 

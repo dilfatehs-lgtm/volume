@@ -270,6 +270,10 @@ The entire app is behind an auto-renewing subscription with a 7-day free trial. 
 appears after the six onboarding screens. Please use a sandbox Apple Account to start the
 trial and access the app.
 
+The purchase button is labeled "Subscribe". The billed price is the most prominent element
+in each plan row; the 7-day free trial is applied automatically when the account is
+eligible and is disclosed in the line beneath the button, after the price.
+
 The app gives no fitness, medical or training advice. It records the sets and reps the user
 enters and multiplies them into a single "volume score" for comparison against their own
 previous sessions.

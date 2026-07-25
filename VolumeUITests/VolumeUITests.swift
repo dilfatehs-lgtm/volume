@@ -152,8 +152,9 @@ final class VolumeUITests: XCTestCase {
     }
 
     /// The paywall gates the whole app, so it has to work with real StoreKit data.
-    /// Prices, periods and trial eligibility all come from `Products.storekit`, attached
-    /// to the scheme's Run action.
+    /// Prices come from `Products.storekit` attached to the scheme's Run action — which
+    /// applies in Xcode but not under `xcodebuild test`, so the assertions below branch
+    /// on whichever paywall state actually renders. Both must be correct.
     func testPaywallShowsRealStoreKitPrices() {
         app.terminate()
         // No -VolumeUnlock: reset clears the DEBUG bypass so the real paywall appears.
@@ -188,8 +189,15 @@ final class VolumeUITests: XCTestCase {
             XCTAssertTrue(app.staticTexts.matching(
                 NSPredicate(format: "label ENDSWITH %@", "a month")
             ).firstMatch.exists, "Monthly price missing")
-            XCTAssertTrue(app.buttons["Try free for 7 days"].exists,
-                          "Trial-first framing missing — check the introductory offer")
+
+            // Guideline 3.1.2(c): the CTA must not lead with the trial. The billed
+            // amount is the prominent element; the trial lives in the fineprint.
+            let subscribe = app.buttons["Subscribe"]
+            XCTAssertTrue(subscribe.exists, "Subscribe CTA missing")
+            XCTAssertTrue(subscribe.isEnabled,
+                          "Subscribe must be tappable when products are loaded")
+            XCTAssertFalse(app.buttons["Try free for 7 days"].exists,
+                           "The trial must never be the CTA — App Review rejected exactly this")
             XCTAssertFalse(app.staticTexts["Prices couldn't be loaded"].exists)
 
             // Yearly is preselected as the better value, and both plans must be reachable
@@ -199,6 +207,16 @@ final class VolumeUITests: XCTestCase {
             XCTAssertTrue(yearlyRow.isSelected, "Yearly should be preselected")
             XCTAssertTrue(monthlyRow.isHittable,
                           "Monthly plan should be visible without scrolling")
+
+            // The fineprint must lead with the billed amount, whatever it is on this
+            // storefront. The selected row's label is "Yearly, <price>", so the price
+            // can be derived rather than hardcoded.
+            let price = String(yearlyRow.label.dropFirst("Yearly, ".count))
+            XCTAssertFalse(price.isEmpty, "Couldn't derive the price from the plan row")
+            XCTAssertTrue(app.staticTexts.matching(
+                NSPredicate(format: "label BEGINSWITH %@ AND label CONTAINS %@",
+                            price, "Cancel any time.")
+            ).firstMatch.exists, "Fineprint must lead with the billed amount")
         } else {
             XCTAssertTrue(app.staticTexts["Prices couldn't be loaded"].exists,
                           "With no products the paywall must explain itself")
