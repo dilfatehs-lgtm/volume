@@ -3,22 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Volume — Workout Log</title>
+<title>Volume — Log your sets. Get one number. Beat it.</title>
+<meta name="description" content="A workout logger for iPhone with one job: tell you if you beat last time. No coaching, no plans, no social feed. 7-day free trial.">
+<meta property="og:title" content="Volume — Workout Log">
+<meta property="og:description" content="Log your sets. Get one number. Beat it next time.">
 <link rel="stylesheet" href="style.css">
+<style>
+  .hero { text-align: center; padding: 0.5rem 0 1rem; }
+  .hero .logo { justify-content: center; margin-left: auto; margin-right: auto; }
+  .tagline { font-size: 1.35rem; font-weight: 650; margin: 0.25rem 0 0; }
+  .tagline em { color: var(--accent); font-style: normal; }
+  .cta {
+    display: inline-block; margin-top: 1.4rem; background: var(--accent); color: #fff;
+    padding: 0.8rem 1.75rem; border-radius: 99px; font-weight: 650; text-decoration: none;
+  }
+  .cta-note { display: block; margin-top: 0.7rem; font-size: 0.9rem; color: var(--muted); }
+  .step { background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
+    padding: 1rem 1.25rem; margin: 0.7rem 0; }
+  .step b { display: block; }
+  .step .n { color: var(--accent); font-weight: 800; margin-right: 0.5rem; }
+  ul.nots { list-style: none; padding: 0; }
+  ul.nots li::before { content: "—"; color: var(--accent); margin-right: 0.6rem; font-weight: 800; }
+</style>
 </head>
 <body>
 <main>
-  <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
-
-  <h1>Volume</h1>
-  <p class="updated">A workout logger for iPhone.</p>
-
-  <div class="lede">
-    <p style="margin:0">Log your sets. Get one number — your total volume. Beat it next time.
-    No coaching, no plans, no social feed.</p>
+  <div class="hero">
+    <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
+    <h1>Volume</h1>
+    <p class="tagline">Log your sets. Get one number. <em>Beat it next time.</em></p>
+    <p class="updated" style="margin-bottom:0">A workout logger for iPhone with one job — and no opinions about you.</p>
+    <!-- Replace href with the real App Store URL at release -->
+    <a class="cta" href="#">Coming soon to the App&nbsp;Store</a>
+    <span class="cta-note">Free for 7 days, then $4.99/month or $49.99/year</span>
   </div>
 
-  <h2>Support</h2>
+  <h2>The whole app, in three steps</h2>
+  <div class="step"><b><span class="n">1</span>Log every set</b>
+    Reps and weight, at the rack, in seconds. Warm-ups are saved but never inflate your score.</div>
+  <div class="step"><b><span class="n">2</span>Get your number</b>
+    Every set is reps × weight. Your session adds up to one volume score. Bodyweight counts — 0 lb never means 0 effort.</div>
+  <div class="step"><b><span class="n">3</span>Beat it</b>
+    Next time, the app shows the number to beat. Pass it and you'll know. Streaks for showing up, records for beating yourself.</div>
+
+  <h2>What Volume will never do</h2>
+  <ul class="nots">
+    <li>Coach you, or sell you a plan</li>
+    <li>Put you in a social feed</li>
+    <li>Make you create an account</li>
+    <li>Collect your data — the privacy label is “Data Not Collected”, and it’s accurate</li>
+    <li>Guilt-trip you on a Monday — an unfinished week can never break your streak</li>
+  </ul>
+
+  <h2>Details that keep the number honest</h2>
+  <ul class="nots">
+    <li>Equal isn’t beating. Only strictly more counts.</li>
+    <li>Forgot to log? Backdate it — streaks, records and charts recalculate as if it was always there.</li>
+    <li>Switch lb/kg any time; every historical score converts instantly.</li>
+    <li>Syncs across your devices through your own iCloud. Delete the app, your log survives.</li>
+  </ul>
+
+  <h2>Price</h2>
+  <div class="lede">
+    <p style="margin:0"><strong>Try free for 7 days</strong>, then $4.99/month or $49.99/year.<br>
+    No ads. No data collection. Cancel anytime in Settings ▸ Subscriptions.</p>
+  </div>
+
+  <h2 id="support">Support</h2>
   <p>Questions, bugs, feature requests or anything else:</p>
   <p><strong><a href="mailto:dilfatehs@gmail.com">dilfatehs@gmail.com</a></strong></p>
   <p>We read every message and usually reply within a couple of days.</p>
@@ -48,6 +99,7 @@
   <footer>
     <a href="privacy.html">Privacy Policy</a>
     <a href="terms.html">Terms of Use</a>
+    <a href="press.html">Press Kit</a>
   </footer>
 </main>
 </body>

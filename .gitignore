@@ -33,3 +33,6 @@ playground.xcworkspace
 fastlane/report.xml
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Marketing footage — big binaries, and the repo is public for GitHub Pages
+Marketing/clips/
