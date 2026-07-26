@@ -206,7 +206,28 @@ Typical review: 24–48 hours.
 
 ---
 
-## STATUS: rejected 25 July 2026 — round 3, needs a new binary
+## STATUS: resubmitted 25 July 2026 — round 3, build 1.0 (4), in review
+
+All four items are *Waiting for Review* with build **1.0 (4)** attached, a reply on the
+rejection thread, and the sandbox money path **verified on device** for the first time:
+paywall loads real prices, subscribe → accelerated expiry → background/foreground →
+resubscribe screen with prices → **Subscribe completes a repurchase**. That's the exact
+journey App Review failed us on, and it now works.
+
+### Two process gotchas from this round
+
+- **Rejected in-app purchases do not load in TestFlight or sandbox.** While the three
+  subscription items sat in *Rejected*, `Product.products(for:)` returned an empty array
+  and the paywall showed "Prices couldn't be loaded" on a real device — nothing wrong with
+  the build. They only start loading again once resubmitted. So the order is forced:
+  resubmit first, then sandbox-test during *Waiting for Review*, and cancel the submission
+  if something's broken. Check the Paid Apps agreement first to rule out the other cause.
+- **"Resubmit to App Review" stays greyed out until every item is individually
+  Ready for Review.** Rejected subscriptions are not swept along with the app version —
+  open each subscription *and* the group, and click its own **Update Review** button.
+  Only then does the master button on the submission page light up.
+
+### Round 3: rejected 25 July 2026 — two issues
 
 Round 2 was reviewed on device (iPhone 17 Pro Max, iOS 26.5.2, and an iPad Air 11") and
 rejected for two reasons. All four items returned as collateral again.
@@ -224,7 +245,7 @@ live; the product catalog loaded once per process with no retry, so one bad load
 nothing to sell; no foreground refresh existed; and the guards in the purchase path
 swallowed taps without feedback.
 
-### The fix (in `main`, ships as 1.0 (3))
+### The fix (in `main`, ships as 1.0 (4))
 
 - Plan rows lead with the price at heavy weight; the plan name is the secondary line.
   The CTA is always **"Subscribe"**; the fineprint leads with the billed amount:
@@ -246,17 +267,20 @@ briefly overlap the app swapping to the unlocked UI (their screenshot showed a s
 under the system alert). That's standard StoreKit 2 timing — `Transaction.updates` lands
 before `purchase()` returns — cosmetic, and not the failure they reproduced. Don't chase it.
 
-**1.0 (3) must be built from `main`** — it also finally ships the `7b85435` restore fix
+**1.0 (4) must be built from `main`** — it also finally ships the `7b85435` restore fix
 noted below, which round 2 deliberately left out.
 
 ### Resubmission
 
-1. Bump build to **1.0 (3)**, archive Release from `main`, upload, wait for processing.
-2. Version page ▸ select build 1.0 (3) ▸ **Add for Review** with all four items attached
+1. Bump build, archive Release from `main`, upload, wait for processing. Two identical
+   uploads exist: 1.0 (3) and 1.0 (4) — Xcode's Distribute flow auto-increments unless
+   you untick "Manage Version and Build Number", so it made (4) after a CLI upload of (3).
+   Attach the newer one; the project file now says 4.
+2. Version page ▸ select build 1.0 (4) ▸ **Add for Review** with all four items attached
    (app, both subscriptions, the Volume Pro group) ▸ Submit.
 3. Reply in the Resolution Center (draft — attach a current paywall screenshot):
 
-   > Both issues are addressed in build 1.0 (3). For 3.1.2(c): the billed amount is now
+   > Both issues are addressed in build 1.0 (4). For 3.1.2(c): the billed amount is now
    > the most prominent pricing element — it leads each plan row in the heaviest type on
    > the card, the purchase button reads "Subscribe", and the disclosure beneath it leads
    > with the price ("$49.99 USD a year after a 7-day free trial. Cancel any time.").
