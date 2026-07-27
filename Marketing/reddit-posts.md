@@ -32,7 +32,7 @@ It's iPhone-only, subscription with a 7-day free trial ($4.99/mo or $49.99/yr). 
 answer anything about the build or the App Store submission process (two genuinely
 undocumented gotchas in that one).
 
-[App Store link]
+https://apps.apple.com/us/app/volume-workout-log/id6793364218
 
 ## 2. r/iosapps — the straight launch post
 
@@ -48,7 +48,7 @@ and dark mode, lb/kg, VoiceOver support.
 7-day free trial, then $4.99/mo or $49.99/yr. Would love feedback from this sub —
 especially on the paywall flow, which I've only ever tested with sandbox accounts.
 
-[App Store link]
+https://apps.apple.com/us/app/volume-workout-log/id6793364218
 
 ## 3. Fitness subs (r/GYM, r/workout, r/naturalbodybuilding — weekly/self-promo threads ONLY)
 

@@ -33,7 +33,7 @@ hit, if that's ever useful material.
 
 Thanks for reading,
 Fateh
-[App Store link]
+https://apps.apple.com/us/app/volume-workout-log/id6793364218
 
 ---
 

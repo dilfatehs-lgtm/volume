@@ -12,7 +12,7 @@
 | Privacy | "Data Not Collected" — no account, no analytics, data in user's own iCloud |
 | Contact | dilfatehs@gmail.com |
 | Support | https://dilfatehs-lgtm.github.io/volume/ |
-| App Store | [link when live] |
+| App Store | https://apps.apple.com/us/app/volume-workout-log/id6793364218 |
 
 ## One paragraph
 

@@ -6,7 +6,7 @@ available for 3–4 hours — HN threads are won in the comments.
 **Title:**
 Show HN: Volume – an iPhone workout logger where everything is derived, nothing cached
 
-**URL:** [App Store link] (text goes in the first comment if using a URL post, or make it a
+**URL:** https://apps.apple.com/us/app/volume-workout-log/id6793364218 (text goes in the first comment if using a URL post, or make it a
 text post with the link inline — text post recommended for the story)
 
 ---
