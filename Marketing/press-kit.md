@@ -5,12 +5,12 @@
 | | |
 |---|---|
 | App | Volume: Workout Log |
-| Developer | Fateh Shergill (solo, first app) — Hibeam Group |
+| Developer | Fateh Shergill — independent solo developer, first app |
 | Platform | iPhone, iOS |
 | Price | Free 7-day trial, then $4.99/month or $49.99/year |
 | Availability | App Store, launched July 2026 |
 | Privacy | "Data Not Collected" — no account, no analytics, data in user's own iCloud |
-| Contact | dilfatehs@gmail.com |
+| Contact | volumeworkoutlog@gmail.com |
 | Support | https://dilfatehs-lgtm.github.io/volume/ |
 | App Store | https://apps.apple.com/us/app/volume-workout-log/id6793364218 |
 
@@ -53,4 +53,4 @@ accessible again; files live in AppStore/screenshots-6.9/]
 
 ## Boilerplate
 
-Volume is developed by Hibeam Group, a one-person studio. Volume is its first app.
+Volume is developed by Fateh Shergill, an independent solo developer. It is their first app.

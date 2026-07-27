@@ -15,8 +15,9 @@ Use the **same handle everywhere** so people can find you. First choice `volumea
 fallbacks `getvolumeapp`, `volumeworkoutlog`, `volume.app`. Check availability on all four
 platforms before committing to one.
 
-Sign up with an email you control — use `dilfatehs@gmail.com` or a new
-`volume@…` address, not a personal handle you'd rather keep separate.
+Sign up for all four with **`volumeworkoutlog@gmail.com`** — the Volume account, made for
+exactly this. Not a personal address you'd rather keep separate. That inbox is now the root
+credential for every social account, so keep 2-Step Verification on it and don't lose it.
 
 ### The four that matter
 
