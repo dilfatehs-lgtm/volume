@@ -145,16 +145,11 @@ Don't repeat words already in the name or subtitle — they're indexed anyway.
 ## What's New in 1.1
 
 ```
-Volume is now completely free. No subscription, no trial, no ads — every feature, for
-everyone.
-
-If you subscribed: thank you for backing Volume early. Your subscription won't renew. You
-can check, or cancel it yourself, in Settings ▸ your name ▸ Subscriptions.
+Every feature, free for everyone. No ads, no account, nothing to buy.
 ```
 
-The second paragraph is the one place the old subscription is mentioned on purpose. Volume
-has no accounts and no email list, so release notes are the only way to tell paying
-subscribers, and Apple asks developers to notify them when a subscription is discontinued.
+Public copy never mentions that 1.0 had a subscription. Nobody ever subscribed, so there's
+no one to notify, and the owner wants Volume presented as simply free.
 
 ---
 
@@ -249,11 +244,10 @@ Headlines live at the top of `AppStore/make-screenshots.swift` — edit the `sho
 ```
 Volume has no account system, so no demo credentials are needed.
 
-Version 1.1 makes Volume completely free. The subscription and paywall from version 1.0 have
-been removed, and the binary no longer offers or references any in-app purchase. After the
-six onboarding screens the app opens directly. The two existing subscription products
-(com.volume.pro.monthly and com.volume.pro.annual) are deliberately not part of this
-submission; we will remove them from sale when this version is released.
+Volume is free and offers no in-app purchases. After the six onboarding screens the app
+opens directly. The subscription products still listed in App Store Connect
+(com.volume.pro.monthly and com.volume.pro.annual) are not used by this version and are not
+part of this submission; they will be removed from sale when it is released.
 
 The app gives no fitness, medical or training advice. It records the sets and reps the user
 enters and multiplies them into a single "volume score" for comparison against their own

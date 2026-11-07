@@ -50,19 +50,11 @@ subscriptions from sale second.
     Pages (which serves `main`/`docs`) switches the website to free. Until then the site
     keeps describing the subscription that 1.0 still sells, which is correct.
 
-### About a month later
-
-11. **Sales and Trends ▸ Subscriptions.** Active subscriptions should fall toward zero.
-    Monthly subscribers lapse within 31 days. Annual subscribers keep what they paid for and
-    lapse at their renewal date without being charged again. Some developers have reported
-    renewals continuing after removal from sale. If the count isn't falling, contact Apple
-    Developer Support.
-
 ### Things that don't need doing
 
-- **Existing subscribers lose nothing.** Everyone gets every feature, which more than meets
-  the Paid Apps Agreement's requirement to keep serving subscribers through the period they
-  paid for. Refunds go through Apple, and the website FAQ says so.
+- **No subscribers to look after.** Nobody ever subscribed to 1.0, so there's no one to
+  notify, refund or monitor. Public copy (listing, What's New, website) just says Volume is
+  free and never mentions that 1.0 had a subscription.
 - **Users who never update from 1.0** would see the resubscribe screen with nothing to buy
   once their subscription lapses. Updating fixes it, and automatic updates cover most people.
 - **The Paid Apps agreement** can stay as it is.
