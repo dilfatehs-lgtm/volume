@@ -12,9 +12,11 @@ Values to paste live in [LISTING.md](LISTING.md).
 
 ## Going free — version 1.1
 
-**Status, 21 October 2026:** 1.0 (4) is live and sells a subscription. Version **1.1 (5)**
+**Status, 7 November 2026:** 1.0 (4) is live and sells a subscription. Version **1.1 (5)**
 removes it entirely: no paywall, no StoreKit, nothing to buy. The code is on the branch
-`remove-subscriptions` and has not been uploaded yet.
+`remove-subscriptions` (pushed, deliberately not merged). **Build 1.1 (5) is uploaded**
+(CLI export from Xcode 27.2, all 76 tests green), so steps 1–2 below are done and step 3 is
+next.
 
 **The order is the whole trick.** The live 1.0 build won't open without an active
 subscription. Remove the subscriptions from sale while 1.0 is still the live version, and
