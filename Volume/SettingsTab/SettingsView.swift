@@ -1,17 +1,14 @@
-import StoreKit
 import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
 
     @Environment(AppSettings.self) private var settings
-    @Environment(SubscriptionManager.self) private var subscriptions
     @Environment(\.modelContext) private var context
     @Query private var goals: [WeeklyGoal]
 
     @State private var goalDays = StreakCalculator.defaultWeeklyGoal
     @State private var didLoadGoal = false
-    @State private var managingSubscription = false
     @State private var confirmingReset = false
 
     var body: some View {
@@ -53,37 +50,6 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    HStack {
-                        Text("Status")
-                        Spacer()
-                        Text(subscriptionStatusText)
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(minHeight: 44)
-                    .accessibilityElement(children: .combine)
-
-                    // Only offered to actual subscribers. Apple's manage-subscriptions
-                    // sheet needs an App Store session, so showing it to someone with no
-                    // subscription just produces a sign-in prompt inside the app for no
-                    // reason — which is exactly what it looked like a bug.
-                    if subscriptions.status == .subscribed || subscriptions.status == .expired {
-                        Button("Manage subscription") { managingSubscription = true }
-                            .frame(minHeight: Theme.minTapTarget)
-                    }
-
-                    Button("Restore purchases") {
-                        Task { await subscriptions.restore() }
-                    }
-                    .frame(minHeight: Theme.minTapTarget)
-                } header: {
-                    Text("Subscription")
-                } footer: {
-                    if let error = subscriptions.errorMessage {
-                        Text(error).foregroundStyle(.red)
-                    }
-                }
-
-                Section {
                     Link("Terms of Use", destination: LegalLinks.terms)
                         .frame(minHeight: Theme.minTapTarget)
                     Link("Privacy Policy", destination: LegalLinks.privacy)
@@ -108,7 +74,6 @@ struct SettingsView: View {
                 #endif
             }
             .navigationTitle("Settings")
-            .manageSubscriptionsSheet(isPresented: $managingSubscription)
             .confirmationDialog("Reset all data?",
                                 isPresented: $confirmingReset,
                                 titleVisibility: .visible) {
@@ -165,15 +130,6 @@ struct SettingsView: View {
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 
-    private var subscriptionStatusText: String {
-        switch subscriptions.status {
-        case .loading: "Checking…"
-        case .subscribed: "Active"
-        case .expired: "Expired"
-        case .never: "Not subscribed"
-        }
-    }
-
     /// Back to a first-launch state.
     ///
     /// iOS apps can't relaunch themselves, and shouldn't try — clearing
@@ -199,9 +155,6 @@ struct SettingsView: View {
         @Bindable var settings = settings
 
         Section {
-            Toggle("Unlock without subscribing", isOn: $settings.debugUnlocked)
-                .frame(minHeight: Theme.minTapTarget)
-
             Button("Load 10 weeks of sample data") {
                 SampleData.populate(in: context, unit: settings.unit)
             }
@@ -224,4 +177,10 @@ struct SettingsView: View {
         }
     }
     #endif
+}
+
+/// Hosted on GitHub Pages from `docs/`. The App Store listing points at the same pages.
+enum LegalLinks {
+    static let terms = URL(string: "https://dilfatehs-lgtm.github.io/volume/terms.html")!
+    static let privacy = URL(string: "https://dilfatehs-lgtm.github.io/volume/privacy.html")!
 }

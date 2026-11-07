@@ -7,7 +7,7 @@
 | App | Volume: Workout Log |
 | Developer | Fateh Shergill — independent solo developer, first app |
 | Platform | iPhone, iOS |
-| Price | Free 7-day trial, then $4.99/month or $49.99/year |
+| Price | Free — no ads, no subscription, no in-app purchases |
 | Availability | App Store, launched July 2026 |
 | Privacy | "Data Not Collected" — no account, no analytics, data in user's own iCloud |
 | Contact | volumeworkoutlog@gmail.com |

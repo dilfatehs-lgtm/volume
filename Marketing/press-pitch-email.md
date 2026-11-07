@@ -22,11 +22,11 @@ you beat last time. Streaks and PRs for consistency; deliberately no coaching, n
 social feed, no account. Native SwiftUI, iCloud sync, and the App Privacy label is "Data
 Not Collected" — accurate, not aspirational.
 
-It's $4.99/month or $49.99/year with a 7-day free trial. I'm a solo developer and this is
-my first app.
+It's free: no ads, no subscription, no in-app purchases. There's no server — workouts live
+on the phone and in the user's own iCloud — so a free user costs me nothing to run, and I
+didn't want to make another subscription app. I'm a solo developer and this is my first app.
 
 Press kit with screenshots: [press kit URL]
-Promo code if you'd like to try it without the subscription: [CODE]
 
 Happy to answer anything — including the two undocumented App Store submission gotchas I
 hit, if that's ever useful material.
@@ -38,4 +38,4 @@ https://apps.apple.com/us/app/volume-workout-log/id6793364218
 ---
 
 **Rules:** send the day the app is live (a link they can't tap is a deleted email). One
-follow-up after 5–7 days, two sentences, then stop. Track who you sent what code to.
+follow-up after 5–7 days, two sentences, then stop.

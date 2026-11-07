@@ -26,7 +26,6 @@ final class MarketingFootageUITests: XCTestCase {
             "-VolumeResetData",
             "-VolumeSampleData",
             "-VolumeSkipOnboarding",
-            "-VolumeUnlock",
         ]
         app.launch()
     }

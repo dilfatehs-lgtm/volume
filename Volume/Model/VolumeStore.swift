@@ -126,14 +126,13 @@ enum VolumeStore {
     ///   -VolumeResetData        wipe everything and re-seed the exercise library
     ///   -VolumeSampleData       load ten weeks of history
     ///   -VolumeSkipOnboarding   mark onboarding complete
-    ///   -VolumeUnlock           bypass the paywall
     ///
     /// Set them in Xcode under Product ▸ Scheme ▸ Edit Scheme ▸ Run ▸ Arguments.
     @MainActor
     private static func applyDebugLaunchArguments(in context: ModelContext) {
         let arguments = Set(ProcessInfo.processInfo.arguments)
         guard !arguments.isDisjoint(with: [
-            "-VolumeResetData", "-VolumeSampleData", "-VolumeSkipOnboarding", "-VolumeUnlock",
+            "-VolumeResetData", "-VolumeSampleData", "-VolumeSkipOnboarding",
         ]) else { return }
 
         // Reset runs first so the flags below can layer on top of a clean slate.
@@ -142,16 +141,12 @@ enum VolumeStore {
             ExerciseLibrary.seed(in: context)
             ensureWeeklyGoalExists(in: context)
             AppSettings.shared.hasCompletedOnboarding = false
-            AppSettings.shared.debugUnlocked = false
         }
         if arguments.contains("-VolumeSampleData") {
             SampleData.populate(in: context, unit: AppSettings.shared.unit)
         }
         if arguments.contains("-VolumeSkipOnboarding") {
             AppSettings.shared.hasCompletedOnboarding = true
-        }
-        if arguments.contains("-VolumeUnlock") {
-            AppSettings.shared.debugUnlocked = true
         }
         try? context.save()
     }

@@ -23,7 +23,7 @@ switching lb/kg is always correct everywhere, because there's no stored aggregat
 invalidate. Every time I was tempted to cache something, the temptation was really a bug
 report from the future.
 
-Stack: SwiftUI, SwiftData, CloudKit sync, StoreKit 2. Things that fail at runtime rather
+Stack: SwiftUI, SwiftData, CloudKit sync. Things that fail at runtime rather
 than compile time and cost me days: CloudKit terminates the process (no thrown error to
 catch) when the entitlement is missing; SwiftData's CloudKit backend rejects unique
 constraints and non-optional relationships only when the container loads; and to-many
@@ -35,7 +35,7 @@ meaningless score), no muscle-group taxonomy (your template names already carry 
 meaning), equal-isn't-beating (strictly >), and the current week can never break your
 streak — you're only judged on completed weeks.
 
-It's $4.99/mo or $49.99/yr with a 7-day trial — no ads, no data collection ("Data Not
+It's free — no ads, no subscription, no in-app purchases, no data collection ("Data Not
 Collected" privacy label), no account. Happy to answer anything about SwiftData+CloudKit,
 App Store review, or the one-number design.
 
@@ -43,9 +43,10 @@ App Store review, or the one-number design.
 
 ## Comment prep
 
-- **"Subscription for a logger?" will be the top comment.** Answer once, honestly, don't
-  re-litigate: solo dev, no ads/data/investor, subscription or nothing; trial is free.
-  Offer: "If the model kills it for you, that's a fair outcome for me to learn."
+- **"What's the catch / how is this free?" will be the top comment.** Answer once,
+  honestly: there's no server — workouts live on the device and in the user's own private
+  iCloud — so a free user costs nothing to run. No ads, no data, no in-app purchases; you
+  just didn't want to ship another subscription app.
 - **Someone will ask for the web/Android version.** "One platform done properly" — and it's
   true, CloudKit lock-in makes iPhone-first rational for a solo dev.
 - **Someone will link a spreadsheet.** Agree with them cheerfully — a spreadsheet is the

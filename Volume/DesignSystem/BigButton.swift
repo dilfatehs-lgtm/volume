@@ -16,7 +16,7 @@ struct BigButtonStyle: ButtonStyle {
 
     // Custom ButtonStyles get no automatic disabled treatment. Without this a disabled
     // button renders identically to a live one and taps die in silence — App Review
-    // reported the paywall's Subscribe button as "unresponsive" for exactly that reason.
+    // once rejected a build for an "unresponsive" button for exactly that reason.
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {

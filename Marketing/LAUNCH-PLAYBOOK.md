@@ -102,7 +102,7 @@ Instagram, the algorithm buries it.
 
 Reply to every comment for the first hour, and check back for the first 24 hours.
 Early comment velocity is a ranking signal, and hostile comments are free material
-(see Script 7 — the "why pay when Hevy is free?" reply video).
+(see Script 7 — the "what's the catch if it's free?" reply video).
 
 ---
 
@@ -117,14 +117,8 @@ Space these out. Doing them all on day one wastes them.
 | 3 | Video #2 — Script 2 (builder story) or Script 3 (anti-feature list). |
 | 4 | **Show HN** — text in [show-hn.md](show-hn.md). Post Tue–Thu, ~9am US Eastern, then stay available 3–4 hours. |
 | 5 | Video #3 — Script 5 (the 8-second confetti loop, made to loop). |
-| 6 | **Press emails** — [press-pitch-email.md](press-pitch-email.md). Send individually to MacStories, The Sweet Setup, 9to5Mac. Personalize line one. Include a promo code. |
+| 6 | **Press emails** — [press-pitch-email.md](press-pitch-email.md). Send individually to MacStories, The Sweet Setup, 9to5Mac. Personalize line one. |
 | 7 | **r/iosapps** post + Video #4. Review your numbers (below). |
-
-### Promo codes for press and creators
-
-App Store Connect ▸ your app ▸ **Promo Codes** — you get 100 per version, free. Generate
-10 for press and creators. Also consider **Offer Codes** (Subscriptions ▸ your subscription
-▸ Offer Codes) for a custom code like `LAUNCH50` that creators can share with their audience.
 
 ---
 
@@ -144,21 +138,21 @@ Need fresh app footage? Recapture any clip in a minute — the rig is
 
 ## What to watch (and what to ignore)
 
-Ignore follower count. Watch these, in App Store Connect ▸ Analytics and Trends:
+Ignore follower count. Watch these, in App Store Connect ▸ App Analytics:
 
 | Metric | Where | What it tells you |
 |---|---|---|
-| **Impressions → downloads** | Analytics | Whether your listing converts browsers |
-| **Trial starts / downloads** | Trends ▸ Subscriptions | Whether people who see the paywall want it |
-| **Trial → paid conversion** | Trends ▸ Subscriptions | Whether they'll pay. **The number that decides everything.** |
-| **Day-7 retention** | Analytics | Whether the loop actually holds people |
+| **Downloads** | App Analytics | Whether the videos and posts are sending anyone at all |
+| **Impressions → downloads** | App Analytics | Whether your listing converts browsers |
+| **Day-7 retention** | App Analytics | Whether the loop actually holds people. **The number that decides everything.** |
+| **Active devices** | App Analytics | Whether people are still logging weeks later |
 
-Trial→paid takes 7+ days to mean anything (that's the trial length). Don't panic before
-day 14. Industry-typical trial→paid for a paid utility is 20–40%; below 15% means the
-paywall or the price is wrong, not the app.
+Day-7 retention takes 7+ days to mean anything. Don't panic before day 14. Retention and
+active devices only count people who opted in to share analytics with developers, so they
+read lower than downloads; watch the trend, not the absolute number.
 
-If downloads are low but trial→paid is high → marketing problem, make more videos.
-If downloads are fine but trial→paid is low → pricing or paywall problem, and that's
+If downloads are low but retention is high → marketing problem, make more videos.
+If downloads are fine but retention is low → the loop isn't holding people, and that's
 worth a conversation before making more videos.
 
 ---
@@ -180,6 +174,5 @@ for fitness apps; whatever is working by then, pour fuel on it.
 - Paid "app review" sites (scams)
 - Press-release distribution services
 - Instagram grid posts (Reels only)
-- Apple Search Ads **for now** — revisit once trial→paid proves the funnel converts. Ads
-  amplify a working funnel; they can't fix a broken one. Budget ceiling when you do:
-  ~$15–20 per subscriber against a $49.99/yr price.
+- Apple Search Ads — Volume is free and earns nothing, so a paid install never pays
+  itself back. Skip them.

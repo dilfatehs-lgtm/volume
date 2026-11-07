@@ -28,7 +28,7 @@ Tech, since this sub asks: SwiftUI + SwiftData + CloudKit sync, and one architec
 everything is derived, nothing is cached. Streaks, records, charts are all recomputed from
 raw sets at read time, which is why backdating a workout or switching lb/kg "just works."
 
-It's iPhone-only, subscription with a 7-day free trial ($4.99/mo or $49.99/yr). Happy to
+It's iPhone-only and free — no ads, no subscription, no in-app purchases. Happy to
 answer anything about the build or the App Store submission process (two genuinely
 undocumented gotchas in that one).
 
@@ -36,7 +36,7 @@ https://apps.apple.com/us/app/volume-workout-log/id6793364218
 
 ## 2. r/iosapps — the straight launch post
 
-**Title:** [Free trial] Volume — a workout log that gives you one number to beat
+**Title:** [Free] Volume — a workout log that gives you one number to beat
 
 Just launched. Volume is a deliberately minimal workout logger: log sets → get your total
 volume (reps × weight, summed) → beat it next session. Two streaks (a per-workout record
@@ -45,8 +45,7 @@ streak and a weekly consistency streak), PRs, and a per-workout chart. Nothing e
 Native SwiftUI, iCloud sync, no account, App Privacy label is "Data Not Collected." Light
 and dark mode, lb/kg, VoiceOver support.
 
-7-day free trial, then $4.99/mo or $49.99/yr. Would love feedback from this sub —
-especially on the paywall flow, which I've only ever tested with sandbox accounts.
+Free: no ads, no subscription, no in-app purchases. Would love feedback from this sub.
 
 https://apps.apple.com/us/app/volume-workout-log/id6793364218
 
@@ -62,7 +61,7 @@ So I made one. Each session is one number — total volume — and the app's onl
 remembering it and telling you if you topped it. It will never tell you what to lift, when
 to rest, or what a "good" week is. You pick your own weekly goal; it just counts.
 
-If that's how your brain works too, it's called Volume, iPhone, free week to try it. And
+If that's how your brain works too, it's called Volume, iPhone, completely free. And
 if you think one number is reductive — fair, tell me why, the tradeoff genuinely interests
 me. (Deloads and strength blocks are the strongest objection I know of; the app treats a
 new workout's first session as neutral, but a planned lower-volume week will read as a
@@ -70,8 +69,9 @@ miss. I chose honesty-of-the-number over smartness. Debate welcome.)
 
 ## Comment ammunition (answers you'll need repeatedly)
 
-- **"Why not free?"** — No ads, no data collection, no investor. The subscription is the
-  business model. Trial's free; if one number isn't worth it, no hard feelings.
+- **"Why is it free? What's the catch?"** — No catch. No ads, no data collection, no
+  in-app purchases. There's no server — your log lives on your phone and in your own
+  iCloud — so you using it costs me nothing. I just hate subscription apps.
 - **"Volume isn't the only progress metric."** — True. It's the most legible one. The app
   measures the log; it doesn't claim to measure you.
 - **"Android?"** — iPhone-only for now; it's a solo project and I'd rather do one platform

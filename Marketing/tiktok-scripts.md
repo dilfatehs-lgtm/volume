@@ -87,13 +87,13 @@ streak grows. And a detail I care about: the current week can never break your s
 you're only judged on finished weeks. No app guilt on a Monday."
 **Caption:** Only finished weeks count. #habits #dontbreakthechain #gymstreak #gymtok
 
-## Script 7 — Reply video: "why pay when Hevy is free?"
+## Script 7 — Reply video: "what's the catch if it's free?"
 **Format:** reply-to-comment sticker, face or VO · ~22s
 **Hook:** the pinned comment itself.
-VO: "Totally fair — Hevy's good, and if you use its features, use it. You're not paying me
-for more features. You're paying for fewer. No feed, no coaching, no ads, nothing between
-you and one number. Some people want a Swiss army knife. I wanted a knife." → Clip A.
-**Caption:** Fewer features is the feature. #workoutapp #gymtok
+VO: "Fair question — there isn't one. No ads, no subscription, no in-app purchases, and it
+doesn't collect your data. There's no server: your log lives on your phone and in your own
+iCloud, so you using it costs me nothing. I just hate subscription apps." → Clip A.
+**Caption:** No ads, no subscription, no catch. #workoutapp #gymtok
 *(Post only as an actual reply once a real comment like this exists — it will.)*
 
 ## Script 8 — Forgot to log Tuesday?

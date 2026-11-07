@@ -47,7 +47,6 @@ final class AppSettings {
         static let appearance = "settings.appearance"
         static let unit = "settings.unit"
         static let onboardingComplete = "settings.onboardingComplete"
-        static let debugUnlocked = "settings.debugUnlocked"
     }
 
     private let defaults: UserDefaults
@@ -64,12 +63,6 @@ final class AppSettings {
         didSet { defaults.set(hasCompletedOnboarding, forKey: Key.onboardingComplete) }
     }
 
-    /// DEBUG-only escape hatch so the paywall can't block development builds.
-    /// Never consulted in release builds — see `SubscriptionManager.hasAccess`.
-    var debugUnlocked: Bool {
-        didSet { defaults.set(debugUnlocked, forKey: Key.debugUnlocked) }
-    }
-
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         let storedAppearance = defaults.string(forKey: Key.appearance)
@@ -77,7 +70,6 @@ final class AppSettings {
         let storedUnit = defaults.string(forKey: Key.unit)
         self.unit = storedUnit.flatMap(WeightUnit.init(rawValue:)) ?? .localeDefault
         self.hasCompletedOnboarding = defaults.bool(forKey: Key.onboardingComplete)
-        self.debugUnlocked = defaults.bool(forKey: Key.debugUnlocked)
     }
 
     func resetForOnboarding() {
@@ -92,7 +84,6 @@ final class AppSettings {
     func resetToDefaults() {
         appearance = .automatic
         unit = .localeDefault
-        debugUnlocked = false
         hasCompletedOnboarding = false
     }
 }

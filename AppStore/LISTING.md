@@ -22,9 +22,12 @@ must be globally unique.
 ## Promotional text (170 max — editable without a new build)
 
 ```
-Log your sets. Get one number. Beat it next time. No coaching, no plans, no noise — just the
+Log your sets. Get one number. Beat it next time. Free, with no ads and no noise — just the
 number that tells you whether you're getting stronger.
 ```
+
+Change this on the day 1.1 is released, not before — until then the live build still has a
+paywall.
 
 ## Description (4000 max)
 
@@ -70,22 +73,19 @@ WHAT IT DOESN'T DO
 No coaching. No AI. No workout plans. No rest timers. No social feed. No login. Volume
 doesn't tell you what to do — it keeps the log and shows you the number.
 
-SUBSCRIPTION
+FREE
 
-Volume is US$4.99/month or US$49.99/year, with a 7-day free trial. Payment is charged to your
-Apple Account at confirmation of purchase. Subscriptions renew automatically unless cancelled
-at least 24 hours before the end of the current period; manage or cancel in your device
-Settings. Your data is never deleted if you stop subscribing.
+Volume is free. No ads, no in-app purchases, and no data collected.
 
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://dilfatehs-lgtm.github.io/volume/privacy.html
 ```
 
-> **Do not remove the last two lines.** The 22 July submission was rejected for exactly
-> this: an auto-renewable subscription with no Terms of Use link in the metadata. Because
-> App Information ▸ License Agreement is Apple's **Standard EULA**, Apple's automated check
-> requires that EULA's URL in the App Description. The in-app link to our own `terms.html`
-> satisfies the *binary* half of guideline 3.1.2, not the metadata half.
+> **Keep the last two lines for 1.1.** They were added after the 22 July rejection, when
+> Apple's automated check wanted the Standard EULA's URL in the description of any app
+> offering auto-renewable subscriptions. The old subscriptions stay on sale until 1.1 is
+> released, so 1.1 is reviewed while they still exist. The lines say nothing about
+> subscriptions and cost nothing. They can go in a later version if you like.
 
 ## Every remaining field, answered
 
@@ -93,7 +93,7 @@ Privacy Policy: https://dilfatehs-lgtm.github.io/volume/privacy.html
 
 | Field | Answer |
 |---|---|
-| Version | `1.0` |
+| Version | `1.1` |
 | Copyright | `2026 Dilfateh Singh Shergill` (no © — Apple adds it) |
 | Support URL | `https://dilfatehs-lgtm.github.io/volume/` |
 | Marketing URL | same, or leave empty (optional) |
@@ -120,18 +120,16 @@ than automatic the moment review passes. Phased Release off (it only applies to 
 | Content Rights | **No** third-party content |
 | License Agreement | Apple's **Standard EULA** (the default) |
 
-The custom Terms are hosted and linked inside the app, which is what satisfies the
-subscription-disclosure requirement; Apple's standard agreement on top is normal.
+Our own Terms are hosted and linked from Settings inside the app; Apple's standard
+agreement on top is normal.
 
 **Pricing and Availability**
 
 | Field | Answer |
 |---|---|
-| Price | **Free** — the download is free, revenue comes from the subscription |
+| Price | **Free**, with no in-app purchases from 1.1 |
 | Availability | All countries |
 | Pre-Orders | Off |
-
-Setting a price here would make the app paid *and* subscription-gated.
 
 **IDFA question at submission** — "Does this app use the Advertising Identifier?" → **No.**
 No ad SDK, no tracking, nothing in the binary that touches it.
@@ -144,11 +142,19 @@ gym,lifting,strength,sets,reps,progressive,overload,weightlifting,tracker,barbel
 
 Don't repeat words already in the name or subtitle — they're indexed anyway.
 
-## What's New (first release)
+## What's New in 1.1
 
 ```
-First release.
+Volume is now completely free. No subscription, no trial, no ads — every feature, for
+everyone.
+
+If you subscribed: thank you for backing Volume early. Your subscription won't renew. You
+can check, or cancel it yourself, in Settings ▸ your name ▸ Subscriptions.
 ```
+
+The second paragraph is the one place the old subscription is mentioned on purpose. Volume
+has no accounts and no email list, so release notes are the only way to tell paying
+subscribers, and Apple asks developers to notify them when a subscription is discontinued.
 
 ---
 
@@ -164,9 +170,13 @@ All questionnaire answers are **None** / **No**. Expected result: **4+**.
 
 ## EU Digital Services Act — trader status
 
-**Declare as a trader.** Selling a subscription is commercial activity, so the DSA
-definition applies (acting "for purposes relating to his or her trade, business, craft or
-profession") even as a sole individual.
+**Declared as a trader** while Volume sold a subscription, since that's commercial activity
+under the DSA definition (acting "for purposes relating to his or her trade, business, craft
+or profession") even for a sole individual.
+
+From 1.1 the app earns nothing, so **non-trader status may now fit**, and it would take your
+address off the EU listing. It's your call, and it isn't automatic: if you ever charge again,
+you'd have to switch back.
 
 Entered under App Store Connect ▸ **Business** ▸ Trader Status: legal name, **street
 address**, phone and email.
@@ -181,44 +191,17 @@ Not legal advice — worth a word with an accountant if your circumstances chang
 
 ---
 
-## Subscriptions
+## Subscriptions — discontinued in 1.1
 
-Create one **subscription group** — suggested reference name `Volume Pro`.
+Version 1.0 sold `com.volume.pro.monthly` (US$4.99) and `com.volume.pro.annual` (US$49.99)
+in the **Volume Pro** group, each with a 7-day free trial. From 1.1 the app is free and the
+binary contains no StoreKit code at all.
 
-| Product ID | Reference name | Duration | Price | Intro offer |
-|---|---|---|---|---|
-| `com.volume.pro.monthly` | Volume Pro Monthly | 1 month | US$4.99 | 7 days free |
-| `com.volume.pro.annual` | Volume Pro Annual | 1 year | US$49.99 | 7 days free |
-
-Each needs a localized **display name** and **description**, plus a review screenshot (any
-paywall screenshot works — `AppStore/screenshots-6.9/` has them).
-
-### Regional pricing — not drift
-
-The table above is the **US** storefront. Canada is deliberately lower:
-
-| Storefront | Monthly | Annual | Annual saves |
-|---|---|---|---|
-| US | $4.99 | $49.99 | 17% |
-| Canada | $2.99 | $29.99 | 16% |
-
-Seeing CA$2.99 in Apple's subscription sheet while every document here says US$4.99 looks
-like the two have drifted apart. They haven't. Keep the ratio roughly proportionate in any
-storefront you set by hand: the paywall's savings badge only renders when annual actually
-beats twelve months of monthly (`PaywallView.savingsBadge`), and `SubscriptionManager` sorts
-annual first as the default selection on the assumption it's the better deal. Lower monthly
-alone and Canadian users would get the worse plan pre-selected with no badge to explain it.
-
-`SubscriptionTests` cannot catch this. It asserts against `Products.storekit`, which holds a
-single US price and has no concept of storefronts.
-
-These must match `Products.storekit` and `SubscriptionManager.monthlyID/annualID` exactly.
-`VolumeTests/SubscriptionTests.swift` asserts the IDs, prices and trial length, so drift
-fails the test suite rather than shipping a paywall with nothing to sell.
-
-> **Do Agreements, Tax, and Banking first.** Until the Paid Apps agreement is active,
-> `Product.products(for:)` returns an empty array and the paywall shows "Prices couldn't be
-> loaded" with nothing explaining why.
+The products still exist in App Store Connect. Apple never deletes an approved in-app
+purchase; you can only **remove it from sale**, which stops new purchases and renewals.
+Do that the day 1.1 is released, not before. The steps and the reason for that order are in
+[SUBMISSION-STEPS.md](SUBMISSION-STEPS.md#going-free--version-11). Don't attach them to
+any future submission.
 
 ---
 
@@ -266,13 +249,11 @@ Headlines live at the top of `AppStore/make-screenshots.swift` — edit the `sho
 ```
 Volume has no account system, so no demo credentials are needed.
 
-The entire app is behind an auto-renewing subscription with a 7-day free trial. The paywall
-appears after the six onboarding screens. Please use a sandbox Apple Account to start the
-trial and access the app.
-
-The purchase button is labeled "Subscribe". The billed price is the most prominent element
-in each plan row; the 7-day free trial is applied automatically when the account is
-eligible and is disclosed in the line beneath the button, after the price.
+Version 1.1 makes Volume completely free. The subscription and paywall from version 1.0 have
+been removed, and the binary no longer offers or references any in-app purchase. After the
+six onboarding screens the app opens directly. The two existing subscription products
+(com.volume.pro.monthly and com.volume.pro.annual) are deliberately not part of this
+submission; we will remove them from sale when this version is released.
 
 The app gives no fitness, medical or training advice. It records the sets and reps the user
 enters and multiplies them into a single "volume score" for comparison against their own
@@ -284,10 +265,6 @@ no data whatsoever.
 
 ---
 
-## Still needed before submitting
+## Still needed before submitting 1.1
 
-- [ ] Push the repo to GitHub and turn on Pages (see SUBMISSION-STEPS.md), so all three
-      URLs go live. They are already written into the app and the values above.
-- [ ] Paid Apps agreement active
-- [ ] Archive and upload a **Release** build, then TestFlight it to your own phone
-- [ ] Sandbox-test purchase → trial → restore end to end
+See [SUBMISSION-STEPS.md](SUBMISSION-STEPS.md#going-free--version-11).

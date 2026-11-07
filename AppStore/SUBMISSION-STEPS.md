@@ -5,6 +5,69 @@ which is the slow one.
 
 Values to paste live in [LISTING.md](LISTING.md).
 
+> Steps 1–7 below are the original 1.0 launch, kept for reference. 1.0 (4) went live on
+> 27 July 2026. **What's current is the next section.**
+
+---
+
+## Going free — version 1.1
+
+**Status, 21 October 2026:** 1.0 (4) is live and sells a subscription. Version **1.1 (5)**
+removes it entirely: no paywall, no StoreKit, nothing to buy. The code is on the branch
+`remove-subscriptions` and has not been uploaded yet.
+
+**The order is the whole trick.** The live 1.0 build won't open without an active
+subscription. Remove the subscriptions from sale while 1.0 is still the live version, and
+every new 1.0 user hits a paywall with nothing to buy. So ship 1.1 first, and remove the
+subscriptions from sale second.
+
+### Before review
+
+1. **Try it on your phone.** Run the `remove-subscriptions` branch from Xcode (⌘R). Check
+   you land straight in the app, and that Settings has no Subscription section.
+2. **Upload build 1.1 (5).** Xcode ▸ Product ▸ **Archive** ▸ **Distribute App** ▸
+   **App Store Connect**. The project already says 1.1 (5).
+3. App Store Connect ▸ Volume ▸ **＋** beside *iOS App* in the sidebar ▸ version `1.1`.
+4. Fill the 1.1 page from [LISTING.md](LISTING.md):
+   - **What's New**: the 1.1 text
+   - **Description**: the FREE paragraph replaces the old SUBSCRIPTION paragraph
+   - **App Review notes**: the new block, which says the subscriptions are deliberately left out
+   - Leave **Promotional Text** alone until release day
+5. **Build** ▸ select **1.1 (5)**. **Attach no in-app purchases or subscriptions.**
+6. Version Release: **Manually release this version** ▸ **Add for Review** ▸ **Submit**.
+
+### On the day it's approved — all four, same day
+
+7. **Release This Version.**
+8. **Remove both subscriptions from sale.** Monetization ▸ **Subscriptions** ▸ *Volume Pro*
+   ▸ the monthly subscription ▸ **Availability** ▸ **Remove from Sale** ▸ confirm ▸ **Save**.
+   Repeat for the annual one. Apple's documentation says this stops new sign-ups *and*
+   renewals.
+9. **Promotional Text** ▸ the new text from LISTING.md. It's editable without review.
+10. **Tell Claude "1.1 is live".** It merges `remove-subscriptions` into `main`, and GitHub
+    Pages (which serves `main`/`docs`) switches the website to free. Until then the site
+    keeps describing the subscription that 1.0 still sells, which is correct.
+
+### About a month later
+
+11. **Sales and Trends ▸ Subscriptions.** Active subscriptions should fall toward zero.
+    Monthly subscribers lapse within 31 days. Annual subscribers keep what they paid for and
+    lapse at their renewal date without being charged again. Some developers have reported
+    renewals continuing after removal from sale. If the count isn't falling, contact Apple
+    Developer Support.
+
+### Things that don't need doing
+
+- **Existing subscribers lose nothing.** Everyone gets every feature, which more than meets
+  the Paid Apps Agreement's requirement to keep serving subscribers through the period they
+  paid for. Refunds go through Apple, and the website FAQ says so.
+- **Users who never update from 1.0** would see the resubscribe screen with nothing to buy
+  once their subscription lapses. Updating fixes it, and automatic updates cover most people.
+- **The Paid Apps agreement** can stay as it is.
+- **App Privacy** stays *Data Not Collected*. Nothing about data changed.
+- **Optional:** EU trader status. See the DSA section in LISTING.md. Without revenue,
+  non-trader status may fit and would take your address off the EU listing.
+
 ---
 
 ## Step 1 — Publish the legal pages (10 min)
@@ -206,7 +269,7 @@ Typical review: 24–48 hours.
 
 ---
 
-## STATUS: resubmitted 25 July 2026 — round 3, build 1.0 (4), in review
+## History: 1.0's three review rounds (approved; live 27 July 2026)
 
 All four items are *Waiting for Review* with build **1.0 (4)** attached, a reply on the
 rejection thread, and the sandbox money path **verified on device** for the first time:

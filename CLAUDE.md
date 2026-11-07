@@ -13,7 +13,7 @@ still has to do. This file covers what you need to change the code safely.
 xcodebuild -project Volume.xcodeproj -scheme Volume \
   -destination 'platform=iOS Simulator,name=iPhone 17' build
 
-# All tests (79 unit + 7 UI; the 10 SubscriptionTests self-skip under CLI, see below)
+# All tests (69 unit + 7 UI)
 xcodebuild -project Volume.xcodeproj -scheme Volume \
   -destination 'platform=iOS Simulator,name=iPhone 17' test
 
@@ -24,7 +24,7 @@ xcodebuild -project Volume.xcodeproj -scheme Volume \
 
 # Run in the simulator (see DEBUG launch arguments below)
 xcrun simctl install "iPhone 17" <DerivedData>/Build/Products/Debug-iphonesimulator/Volume.app
-xcrun simctl launch "iPhone 17" com.hibeamgroup.volume -VolumeResetData -VolumeSampleData -VolumeSkipOnboarding -VolumeUnlock
+xcrun simctl launch "iPhone 17" com.hibeamgroup.volume -VolumeResetData -VolumeSampleData -VolumeSkipOnboarding
 ```
 
 UI-test screenshots are `XCTAttachment`s; extract with
@@ -32,8 +32,8 @@ UI-test screenshots are `XCTAttachment`s; extract with
 (pass `-resultBundlePath` when running).
 
 DEBUG launch arguments (`VolumeStore.applyDebugLaunchArguments`): `-VolumeResetData`
-(wipes data **and** the onboarding/unlock flags, applied first), `-VolumeSampleData`,
-`-VolumeSkipOnboarding`, `-VolumeUnlock`.
+(wipes data **and** the onboarding flag, applied first), `-VolumeSampleData`,
+`-VolumeSkipOnboarding`.
 
 ## Architecture
 
@@ -95,12 +95,6 @@ Tests pin all of these. If one fails after your change, the change is wrong, not
 - The project uses **Xcode 16 file-system-synchronized groups**, so new files under
   `Volume/` are picked up automatically. `Info.plist` and `Volume.entitlements` are excluded
   from build phases via `membershipExceptions` in the pbxproj — keep them there.
-- **StoreKit tests use `SKTestSession`**, not the scheme's `StoreKitConfigurationFileReference`
-  (which applies to Run but not `xcodebuild test`). `Products.storekit` is at the repo root
-  and bundled into the unit-test target. **On iOS 26.x simulator runtimes SKTestSession is
-  broken under CLI `xcodebuild test`** (SKInternalErrorDomain Code=3; the config never
-  reaches storekitd — Apple bug, see flutter/flutter#184678), so `SubscriptionTests`
-  self-skips. Don't "fix" the .storekit file; it's fine.
 - UI tests: several views are single combined accessibility elements for VoiceOver, so
   `staticTexts["Some Title"]` won't match. Use the label-prefix helpers in the test file.
   `waitForExistence` does not imply hittable — scroll explicitly.
@@ -111,6 +105,9 @@ Tests pin all of these. If one fails after your change, the change is wrong, not
   "Upper", "Maria's Tuesday Workout") already carries that meaning. The near-duplicate
   naming nudge in `TemplateNameMatcher` handles the one real failure case.
 - **No cardio in the exercise library.** "One rep of treadmill" produces a meaningless score.
+- **Free, with no subscription, ads or in-app purchases** (since 1.1; 1.0 sold a
+  subscription). The owner removed it because they dislike subscription apps, so don't
+  propose a paywall, tip jar or "Pro" tier. There's no StoreKit in the binary.
 - **No advice, coaching, plans, rest timers, social, login, or Health integration.** Stats
   that are facts about the log (personal bests, PR counts, last score) are fine; anything
   that tells the user what to *do* is not. 7 days a week is selectable with no commentary.

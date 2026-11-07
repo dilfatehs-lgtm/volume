@@ -30,7 +30,6 @@ The first launch is empty by design. Two ways to fill it:
   |---|---|
   | `-VolumeSampleData` | 10 weeks of Push/Pull/Legs history |
   | `-VolumeSkipOnboarding` | Skip the 6-step tour |
-  | `-VolumeUnlock` | Bypass the paywall |
   | `-VolumeResetData` | Wipe everything and re-seed the exercise library |
 
 The sample data is shaped to exercise the interesting cases: interleaved workouts (so
@@ -44,14 +43,13 @@ current week** so you can see that an unfinished week doesn't break the week str
 xcodebuild test -scheme Volume -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
-- **VolumeTests** (66 unit tests) — score maths, unit conversion, per-workout comparison,
+- **VolumeTests** (69 unit tests) — score maths, unit conversion, per-workout comparison,
   both streaks and their best-ever counterparts, personal bests and PR counts,
-  forward-only goal history, backdating, the celebration trigger, and the StoreKit products
-  (via `SKTestSession`).
+  forward-only goal history, backdating, warm-ups, and the celebration trigger.
 - **VolumeUITests** (7 tests) — end-to-end: start a workout, repeat last time, log a set,
   cross the score to beat, see the celebration, finish, read the summary. Plus creating a
-  new workout, backdating one from the Calendar, real StoreKit prices on the paywall, and a
-  screenshot of every tab in light and dark.
+  new workout, backdating one from the Calendar, a fresh install landing straight in the
+  app with nothing to buy, and a screenshot of every tab in light and dark.
 
 ---
 
@@ -99,34 +97,14 @@ relationship must be optional with an explicit inverse, and `@Attribute(.unique)
 banned. Breaking any of these fails at runtime, not compile time. See the notes at the top
 of `Volume/Model/Models.swift`.
 
-### 3. Subscriptions (StoreKit 2)
+### 3. Legal pages
 
-Placeholder products, already wired and working locally via `Products.storekit` (attached
-to the scheme's Run action, so the paywall shows real prices in the simulator):
+The Terms and Privacy links in Settings (`LegalLinks`, at the bottom of
+`Volume/SettingsTab/SettingsView.swift`) point at the pages in `docs/`, served by GitHub
+Pages from `main`. App Review rejects apps whose privacy link is dead.
 
-| Product ID | Price | Period | Trial |
-|---|---|---|---|
-| `com.volume.pro.monthly` | US$4.99 | 1 month | 7 days free |
-| `com.volume.pro.annual` | US$49.99 | 1 year | 7 days free |
-
-To use real products:
-
-1. **App Store Connect** ▸ your app ▸ Subscriptions ▸ create a subscription **group**
-   (e.g. "Volume Pro") containing both products, each with a 7-day free **Introductory
-   Offer**.
-2. Change the IDs in **`Volume/Subscription/SubscriptionManager.swift`**
-   (`monthlyID` / `annualID`) — that's the only place in code they appear.
-3. Update `Products.storekit` to match, so local testing and `SubscriptionTests` keep
-   working. It's bundled into the test target, so the tests assert your real IDs, prices
-   and trial length — change an ID in one place and not the other and they fail.
-4. Complete *Agreements, Tax, and Banking*, or products return empty with no error.
-
-The paywall reads prices, periods and trial eligibility from StoreKit, so it adapts to
-whatever you configure — the savings badge only appears when both real prices are known.
-
-**Replace before submitting:** the Terms and Privacy URLs in
-`Volume/Subscription/PaywallView.swift` (`LegalLinks`) point at placeholder addresses.
-App Review rejects submissions without working links.
+Volume is free, with no in-app purchases. Version 1.0 sold a subscription, and 1.1 removed
+it; `AppStore/SUBMISSION-STEPS.md` covers retiring the old products in App Store Connect.
 
 ---
 
@@ -219,8 +197,7 @@ Volume/
 ├── DesignSystem/   theme, hero score, progress ring, confetti, celebration, buttons
 ├── ActiveWorkout/  the product: live score, set logging, celebration, summary
 ├── Home/  CalendarTab/  RecordsTab/  SettingsTab/
-├── Onboarding/     6 steps, each animating a real component from the app
-└── Subscription/   StoreKit 2 manager, paywall, resubscribe
+└── Onboarding/     6 steps, each animating a real component from the app
 ```
 
 Uses Xcode 16 file-system-synchronized groups: the target references the `Volume/` folder,
@@ -229,4 +206,5 @@ so files you add are picked up automatically without touching the project file.
 ## Deliberately not built
 
 No advice, coaching, AI suggestions, rest timers or workout plans. No social, sharing or
-friends. No login or accounts. No Apple Health. No iPad or watchOS target.
+friends. No login or accounts. No Apple Health. No iPad or watchOS target. No subscription,
+ads or in-app purchases.

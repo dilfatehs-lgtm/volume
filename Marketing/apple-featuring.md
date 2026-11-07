@@ -25,10 +25,9 @@ unfinished week can never break a streak, so the app never guilt-trips on a Mond
 
 **Technology adoption:**
 Native SwiftUI throughout. SwiftData with CloudKit for automatic cross-device sync with no
-account or login. StoreKit 2 for subscriptions with a 7-day free trial. Nothing is cached:
-scores, streaks, records and charts are all derived from raw set data at read time, so
-backdated workouts and lb/kg switching are always consistent. Full light/dark mode support
-following the system. Privacy manifest included; the App Privacy label is "Data Not
+account or login. Nothing is cached: scores, streaks, records and charts are all derived
+from raw set data at read time, so backdated workouts and lb/kg switching are always
+consistent. Full light/dark mode support following the system. Privacy manifest included; the App Privacy label is "Data Not
 Collected" — accurate, since data lives only in the user's own iCloud.
 
 **Accessibility:**
