@@ -14,10 +14,14 @@ Values to paste live in [LISTING.md](LISTING.md).
 
 **Status, 7 November 2026:** 1.0 (4) is live and sells a subscription. Version **1.1 (5)**
 removes it entirely: no paywall, no StoreKit, nothing to buy. The code is on the branch
-`remove-subscriptions` (pushed, deliberately not merged). **Build 1.1 (5) was uploaded and
-submitted on 7 November; it's Waiting for Review**, so steps 1–6 below are done. Promotional
-Text was set on the 1.1 page too, so step 9 is also done. Next: on approval, steps 7, 8 and
-10.
+`remove-subscriptions`. **Done, 7 November 2026:** build 1.1 (5) was uploaded, submitted,
+approved the same day and released. Both subscriptions were removed from sale afterwards,
+and the branch was merged to `main`, which switched the website to free. Every step below
+is complete. This section is kept as the record of how it was done.
+
+> **Remove from Sale has no Save step.** The checklist below (from Apple's help page) says
+> to click Save afterwards, but in the November 2026 UI the removal applies as soon as you
+> confirm it, and no Save button appears.
 
 **The order is the whole trick.** The live 1.0 build won't open without an active
 subscription. Remove the subscriptions from sale while 1.0 is still the live version, and
